@@ -32,8 +32,6 @@ public class DBDriver {
 
 		try {
 			// get connection to db - username, pw
-			// //db574069647.db.1and1.com:3306/db574069647 "dbo574069647",
-			// "X4$2?3Mb"
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/agb_tool_db", "root", "");
 
