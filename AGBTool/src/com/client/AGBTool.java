@@ -39,18 +39,22 @@ public class AGBTool implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		final Button sendButton = new Button("Send");
+		final Button sendButton = new Button("Sendsdfsdfsdf");
 		final TextBox nameField = new TextBox();
 		nameField.setText("Hello GWT User");
 		final Label errorLabel = new Label();
 
 		// We can add style names to widgets
-		sendButton.addStyleName("sendButton");
+		sendButton.addStyleName("sendButtosn");
 
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 		RootPanel.get("nameFieldContainer").add(nameField);
+		
+
 		RootPanel.get("sendButtonContainer").add(sendButton);
+
+		
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 
 		// Focus the cursor on the name field when the app loads
@@ -111,7 +115,7 @@ public class AGBTool implements EntryPoint {
 				errorLabel.setText("");
 				String textToServer = nameField.getText();
 				if (!FieldVerifier.isValidName(textToServer)) {
-					errorLabel.setText("Please enter at least four characters");
+					errorLabel.setText("Please enter at leastsdfsdf four characters");
 					return;
 				}
 
@@ -119,6 +123,8 @@ public class AGBTool implements EntryPoint {
 				sendButton.setEnabled(false);
 				textToServerLabel.setText(textToServer);
 				serverResponseLabel.setText("");
+				
+				
 				greetingService.greetServer(textToServer,
 						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {

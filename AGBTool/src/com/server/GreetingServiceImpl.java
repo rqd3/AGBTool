@@ -1,7 +1,9 @@
 package com.server;
 
 import com.client.GreetingService;
+import com.server.db.DBDriver;
 import com.shared.FieldVerifier;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -12,6 +14,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
 	public String greetServer(String input) throws IllegalArgumentException {
+		System.out.println("backend");
+
+		DBDriver dbDriver = new DBDriver();
+		
 		// Verify that the input is valid. 
 		if (!FieldVerifier.isValidName(input)) {
 			// If the input is not valid, throw an IllegalArgumentException back to
