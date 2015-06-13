@@ -1,11 +1,16 @@
 package com.server.db;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +37,14 @@ public class DBDriver {
 
 		try {
 			// get connection to db - username, pw
+			// //db574069647.db.1and1.com:3306/db574069647 "dbo574069647",
+			// "X4$2?3Mb"
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/agb_tool_db", "root", "");
 
 			getAllAGBSources();
 			getAllAGBVersionsOfSource("ebay");
+			setAGBAdvice("https://www.youtube.com/watch?v=CGCMl-K09vg");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -74,12 +82,11 @@ public class DBDriver {
 	/**
 	 * Get all agb versions of one agb source by name. Transform them into AGBVersionModels and add
 	 * them to a list.
-	 * 
+	 * @param String sourceName 
 	 * @return List<AGBVersion> allAGBVersions
 	 * @throws SQLException
 	 */
-	public List<AGBVersion> getAllAGBVersionsOfSource(String sourceName)
-			throws SQLException {
+	public List<AGBVersion> getAllAGBVersionsOfSource(String sourceName) throws SQLException {
 		List<AGBVersion> agbVersions = new ArrayList<>();
 
 		Statement myStatement = connection.createStatement();
@@ -99,6 +106,54 @@ public class DBDriver {
 		}
 
 		return agbVersions;
+	}
+	
+	/**
+	 * Saves an agb advice to table agb_advice, if url is reachable return true
+	 * @param String link to agb
+	 * @return Boolean 
+	 */
+	public boolean setAGBAdvice(String link) throws SQLException {
+		
+		if(isUrlReachable(link)){
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date(System.currentTimeMillis());
+		String dateFormated = dateFormat.format(date);
+		
+		Statement myStatement = connection.createStatement();
+
+		myStatement.executeUpdate("INSERT INTO agb_tool_db.agb_advice  VALUES (NULL, '" + link + "', '"+ dateFormated + "', 'unchecked')");
+		}else{
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks if string is a reachable url
+	 * @param String url
+	 * @return true = valid
+	 */
+	public boolean isUrlReachable(String url){
+		boolean validState = false;
+		
+		url = url.replaceFirst("^https", "http");
+
+	    try {
+	        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+	        connection.setConnectTimeout(7000);
+	        connection.setReadTimeout(7000);
+	        connection.setRequestMethod("HEAD");
+	        int responseCode = connection.getResponseCode();
+	        
+	        if (200 <= responseCode && responseCode <= 399){
+	        	validState = true;
+	        }
+	    } catch (IOException exception) {
+	        return validState;
+	    }
+		
+		return validState;
 	}
 
 }
