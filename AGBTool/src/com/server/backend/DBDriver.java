@@ -1,4 +1,4 @@
-package com.server.db;
+package com.server.backend;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -14,9 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.shared.dbModels.AGBSource;
-import com.shared.dbModels.AGBVersion;
+import com.shared.models.AGBSource;
+import com.shared.models.AGBVersion;
 
+/**
+ * Direct db access via jdbc
+ * @author rqd3-u
+ *
+ */
 public class DBDriver {
 	Connection connection = null;
 
@@ -36,15 +41,14 @@ public class DBDriver {
 		System.out.println("MySQL JDBC Driver Registered!");
 
 		try {
-			// get connection to db - username, pw
-			// //db574069647.db.1and1.com:3306/db574069647 "dbo574069647",
-			// "X4$2?3Mb"
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/agb_tool_db", "root", "");
 
+			//testing
 			getAllAGBSources();
 			getAllAGBVersionsOfSource("ebay");
 			setAGBAdvice("https://www.youtube.com/watch?v=CGCMl-K09vg");
+			getLatestVersionOfDB(2);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -58,6 +62,7 @@ public class DBDriver {
 	 * 
 	 * @return List<AGBSource> allAGBSources
 	 * @throws SQLException
+	 * @deprecated
 	 */
 	public List<AGBSource> getAllAGBSources() throws SQLException {
 		List<AGBSource> agbSources = new ArrayList<>();
@@ -70,8 +75,9 @@ public class DBDriver {
 			int agbSourceId = result.getInt("agb_source_id");
 			String name = result.getString("name");
 			String link = result.getString("link");
+			String xPath = result.getString("xPath");
 
-			AGBSource agbSource = new AGBSource(agbSourceId, name, link);
+			AGBSource agbSource = new AGBSource(agbSourceId, name, link, xPath);
 			System.out.println(agbSource.toString());
 			agbSources.add(agbSource);
 		}
@@ -79,7 +85,7 @@ public class DBDriver {
 		return agbSources;
 	}
 
-	/**
+	/**@deprecated
 	 * Get all agb versions of one agb source by name. Transform them into AGBVersionModels and add
 	 * them to a list.
 	 * @param String sourceName 
@@ -94,18 +100,47 @@ public class DBDriver {
 		ResultSet result = myStatement.executeQuery("SELECT agb_version_id, agb_version.agb_source_id, text, version, published_at FROM agb_version LEFT JOIN agb_source ON agb_source.agb_source_id = agb_version.agb_source_id  WHERE agb_source.name LIKE '"+sourceName+"'");
 
 		while (result.next()) {
-			int agbVersionId = result.getInt("agb_version_id");
-			int agbSourceId = result.getInt("agb_source_id");
-			String text = result.getString("text");
-			int version = result.getInt("version");
-			Date publishedAt = result.getDate("published_at");
-			
-			AGBVersion agbVersion = new AGBVersion(agbVersionId, agbSourceId, text, version, publishedAt);
+			AGBVersion agbVersion = dbResultToAGBVersion(result);
 			System.out.println(agbVersion.toString());
 			agbVersions.add(agbVersion);
 		}
 
 		return agbVersions;
+	}
+	
+	/**
+	 * @deprecated
+	 * @param agbSourceId
+	 * @return
+	 * @throws SQLException
+	 */
+	public AGBVersion getLatestVersionOfDB(int agbSourceId) throws SQLException{
+		Statement myStatement = connection.createStatement();
+		
+		//Select row with max published_at value
+		ResultSet result = myStatement.executeQuery("SELECT * FROM `agb_version` WHERE published_at = (SELECT MAX(published_at) FROM agb_version WHERE `agb_source_id` like "+ agbSourceId +") AND `agb_source_id` like "+ agbSourceId +"");
+
+		AGBVersion agbVersion = dbResultToAGBVersion(result);
+		
+		return agbVersion;
+	}
+	
+	/**
+	 * @deprecated
+	 * @param result
+	 * @return
+	 * @throws SQLException
+	 */
+	public AGBVersion dbResultToAGBVersion(ResultSet result) throws SQLException{
+		int agbVersionId = result.getInt("agb_version_id");
+		int agbSourceId = result.getInt("agb_source_id");
+		String text = result.getString("text");
+		int version = result.getInt("version");
+		Date publishedAt = result.getDate("published_at");
+		
+		AGBVersion agbVersion = new AGBVersion(agbVersionId, agbSourceId, text, version, publishedAt);
+		
+		return agbVersion;
 	}
 	
 	/**

@@ -1,9 +1,14 @@
-package com.shared.dbModels;
+package com.shared.models;
 
 import java.io.Serializable;
 import java.sql.Date;
 
-public class AGBVersion implements Serializable{
+/**
+ * Model for agb_version entries
+ * @author rqd3-u
+ *
+ */
+public class AGBVersion implements Serializable {
 
 	private int agbVersionId;
 	

@@ -1,4 +1,4 @@
-package com.shared.dbModels;
+package com.shared.models;
 
 import java.sql.Date;
 

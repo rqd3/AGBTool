@@ -1,4 +1,4 @@
-package com.shared.dbModels;
+package com.shared.models;
 
 import java.io.Serializable;
 
@@ -15,12 +15,15 @@ public class AGBSource implements Serializable {
 	
 	private String link;
 	
+	private String xPath;
+	
 
-	public AGBSource(int id, String name, String link) {
+	public AGBSource(int id, String name, String link, String xPath) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.link = link;
+		this.xPath = xPath;
 	}
 
 	public int getId() {
@@ -46,6 +49,14 @@ public class AGBSource implements Serializable {
 	public void setLink(String link) {
 		this.link = link;
 	}
+	
+	public String getXPath() {
+		return xPath;
+	}
+
+	public void setXPath(String xPath) {
+		this.xPath = xPath;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -53,7 +64,7 @@ public class AGBSource implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AGBSource [id=" + id + ", name=" + name + ", link=" + link
+		return "AGBSource [id=" + id + ", name=" + name + ", link=" + link + ", xPath=" + xPath
 				+ "]";
 	}
 	

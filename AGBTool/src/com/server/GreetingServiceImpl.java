@@ -1,10 +1,9 @@
 package com.server;
 
 import com.client.GreetingService;
-import com.server.db.DBDriver;
-import com.shared.FieldVerifier;
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.server.backend.APIController;
+import com.shared.FieldVerifier;
 
 /**
  * The server-side implementation of the RPC service.
@@ -16,7 +15,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	public String greetServer(String input) throws IllegalArgumentException {
 		System.out.println("backend");
 
-		DBDriver dbDriver = new DBDriver();
+		//testing
+		//DBDriver dbDriver = new DBDriver();
+		APIController apiController = new APIController();
+		
 		
 		// Verify that the input is valid. 
 		if (!FieldVerifier.isValidName(input)) {
