@@ -1,23 +1,26 @@
 package com.server;
 
-import com.client.GreetingService;
+import java.util.List;
+
+import com.client.AGBToolService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.server.backend.APIController;
 import com.shared.FieldVerifier;
+import com.shared.models.AGBSource;
 
 /**
  * The server-side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class GreetingServiceImpl extends RemoteServiceServlet implements
-		GreetingService {
+public class AGBToolServiceImpl extends RemoteServiceServlet implements
+		AGBToolService {
 
 	public String greetServer(String input) throws IllegalArgumentException {
 		System.out.println("backend");
 
 		//testing
 		//DBDriver dbDriver = new DBDriver();
-		APIController apiController = new APIController();
+		//APIController apiController = new APIController();
 		
 		
 		// Verify that the input is valid. 
@@ -37,6 +40,16 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo
 				+ ".<br><br>It looks like you are using:<br>" + userAgent;
+	}
+	
+	/**
+	 * 
+	 */
+	public List<AGBSource> getTopTenAGBs() throws IllegalArgumentException{
+		APIController apiController = new APIController();
+		
+		return apiController.getTopTenAGBSources();
+		
 	}
 
 	/**

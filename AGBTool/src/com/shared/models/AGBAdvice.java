@@ -2,6 +2,11 @@ package com.shared.models;
 
 import java.sql.Date;
 
+/**
+ * Model for agb_advice entries
+ * @author rqd3-u
+ *
+ */
 public class AGBAdvice {
 	
 	int id;
@@ -11,6 +16,10 @@ public class AGBAdvice {
 	Date submit_date;
 	
 	String state;
+	
+	public AGBAdvice(){
+		
+	}
 
 	public AGBAdvice(int id, String link, Date submit_date, String state) {
 		super();

@@ -19,6 +19,10 @@ public class AGBVersion implements Serializable {
 	private int version;
 	
 	private Date publishedAt;
+	
+	public AGBVersion(){
+		
+	}
 
 	public AGBVersion(int agbVersionId, int agbSourceId, String text,
 			int version, Date publishedAt) {

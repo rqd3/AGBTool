@@ -21,7 +21,7 @@ public class APIController {
 
 		//testing
 		//getAllAGBVersionsOfSource(4);
-		System.out.println(getLatestAGBVersion(49).getText());
+		//System.out.println(getLatestAGBVersion(39).getText());
 		//getLatestAGBVersion(2).getText();
 		//getAllAGBSources();
 	}
@@ -32,6 +32,26 @@ public class APIController {
 	 */
 	public List<AGBSource> getAllAGBSources() {
 		String sUrl = "http://localhost/agbApi/api1.0/agbsources/"; 
+		
+		List<AGBSource> agbSources =null;
+		try {
+			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
+			agbSources = jsonController.jsonToAGBSources(jsonElement);
+			
+			System.out.println(jsonController.jsonToAGBSources(jsonController.getJsonElementFromUrl(sUrl)));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return agbSources;
+	}
+	
+	/**
+	 * Get top ten agb sources
+	 * @return List<AGBSource> agbSources
+	 */
+	public List<AGBSource> getTopTenAGBSources() {
+		String sUrl = "http://localhost/agbApi/api1.0/agbsources/topten"; 
 		
 		List<AGBSource> agbSources =null;
 		try {
@@ -69,7 +89,7 @@ public class APIController {
 	/**
 	 * Get all versions of one source
 	 * @param sourceName
-	 * @return
+	 * @return List<AGBVersion> agbVersions
 	 */
 	public List<AGBVersion> getAllAGBVersionsOfSource(int sourceId){
 		String sUrl = "http://localhost/agbApi/api1.0/agbversions/"+sourceId;

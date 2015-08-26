@@ -2,12 +2,17 @@ package com.shared.models;
 
 import java.io.Serializable;
 
+/**
+ * Model for agb_source entries
+ * @author rqd3-u
+ *
+ */
 public class AGBSource implements Serializable {
 
 	/**
 	 * Represents a agb source f.e. ebay
 	 */
-	private static final long serialVersionUID = 1L;
+
 	
 	private int id;
 	
@@ -18,6 +23,10 @@ public class AGBSource implements Serializable {
 	private String xPath;
 	
 
+	public AGBSource(){
+		
+	}
+	
 	public AGBSource(int id, String name, String link, String xPath) {
 		super();
 		this.id = id;
@@ -58,9 +67,6 @@ public class AGBSource implements Serializable {
 		this.xPath = xPath;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 	@Override
 	public String toString() {
