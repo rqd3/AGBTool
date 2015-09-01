@@ -71,7 +71,7 @@ public class APIController {
 	 * @return List<AGBSource> agbSources
 	 */
 	public AGBVersion getLatestAGBVersion(int sourceId) {
-		String sUrl = "http://localhost/agbApi/api1.0/latestagbversion/"+sourceId; 
+		String sUrl = "http://localhost/agbApi/api1.0/agbversion/"+sourceId; 
 		
 		AGBVersion latestAgbVersion =null;
 		try {

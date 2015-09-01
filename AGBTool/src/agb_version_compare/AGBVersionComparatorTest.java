@@ -1,11 +1,6 @@
 package agb_version_compare;
 
-import difflib.*;
-
-import java.util.*;
-
 import com.server.backend.APIController;
-import com.server.backend.JSONController;
 import com.shared.models.AGBVersion;
 
 public class AGBVersionComparatorTest 
