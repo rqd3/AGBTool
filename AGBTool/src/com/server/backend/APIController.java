@@ -15,6 +15,7 @@ import com.shared.models.AGBVersion;
 public class APIController {
 	
 	JSONController jsonController;
+	DBDriver dbDriver;
 
 	public APIController() {
 		jsonController = new JSONController();
@@ -38,7 +39,6 @@ public class APIController {
 			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
 			agbSources = jsonController.jsonToAGBSources(jsonElement);
 			
-			System.out.println(jsonController.jsonToAGBSources(jsonController.getJsonElementFromUrl(sUrl)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,7 +58,6 @@ public class APIController {
 			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
 			agbSources = jsonController.jsonToAGBSources(jsonElement);
 			
-			System.out.println(jsonController.jsonToAGBSources(jsonController.getJsonElementFromUrl(sUrl)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,11 +66,12 @@ public class APIController {
 	}
 	
 	/**
-	 * Get all agb sources
-	 * @return List<AGBSource> agbSources
+	 * Get latest agbVersion
+	 * Count in agb_favorite +1
+	 * @return AGBVersion> latest agbVersion
 	 */
 	public AGBVersion getLatestAGBVersion(int sourceId) {
-		String sUrl = "http://localhost/agbApi/api1.0/agbversion/"+sourceId; 
+		String sUrl = "http://localhost/agbApi/api1.0/agbversions/latest"+sourceId; 
 		
 		AGBVersion latestAgbVersion =null;
 		try {
@@ -83,11 +83,14 @@ public class APIController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dbDriver.countAGBSourceCalls(sourceId);
 		return latestAgbVersion;
 	}
 	
 	/**
 	 * Get all versions of one source
+	 * Count in agb_favorite +1
+	 * 
 	 * @param sourceName
 	 * @return List<AGBVersion> agbVersions
 	 */
@@ -99,11 +102,11 @@ public class APIController {
 			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
 			agbVersions = jsonController.jsonToAGBVersions(jsonElement);
 			
-			System.out.println(jsonController.jsonToAGBVersions(jsonController.getJsonElementFromUrl(sUrl)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		dbDriver.countAGBSourceCalls(sourceId);
 		return agbVersions;
 		
 		
