@@ -2,6 +2,11 @@
 include 'AGBVersion.class.php';
 include 'AGBSource.class.php';
 
+/**
+ * Handles communication with db
+ * @author rqd3-u
+ *
+ */
 class AGBDBConnector
 {
 	private $mysqli =null;
@@ -27,8 +32,11 @@ class AGBDBConnector
 	*/
 	function getLatestVersionOfDB($agbSourceId){
 		//Select row with max published_at value
-		$abfrage = "SELECT * FROM `agb_version` WHERE published_at = (SELECT MAX(published_at) FROM agb_version WHERE `agb_source_id` like ".$agbSourceId.") AND `agb_source_id` like ".$agbSourceId."";
-		$ergebnis = mysqli_query($this->mysqli, $abfrage); 
+		$abfrage = $this->mysqli->prepare("SELECT * FROM `agb_version` WHERE published_at = (SELECT MAX(published_at) FROM agb_version WHERE `agb_source_id` like ?) AND `agb_source_id` like ?");
+		$abfrage->bind_param("ii", $agbSourceId, $agbSourceId);
+		$abfrage->execute();
+		
+		$ergebnis = $abfrage->get_result();
 
 		return $this->sqlToAGBVersionObject($ergebnis);
 	}
@@ -39,10 +47,13 @@ class AGBDBConnector
 	*/
 	function getVersionsOfAGBSource($agbSourceId){
 		//Select row with max published_at value
-		$abfrage = "SELECT * FROM `agb_version` WHERE `agb_source_id` LIKE ".$agbSourceId."";
-		$ergebnis = mysqli_query($this->mysqli, $abfrage);
+		$abfrage = $this->mysqli->prepare("SELECT * FROM `agb_version` WHERE `agb_source_id` LIKE ? ORDER BY `published_at` DESC");
+		$abfrage->bind_param("i", $agbSourceId);
+		$abfrage->execute();
 		
-		return $this->sqlToAGBVersionObject($ergebnis);
+		$ergebnis = $abfrage->get_result();
+		
+		return $this->sqlToAGBVersionObjectArray($ergebnis);
 	}
 	
 		/**
@@ -51,10 +62,25 @@ class AGBDBConnector
 	* @param $latestVersionTextOnline
 	*/
 	function addAGBToDB($agbSourceId, $latestVersionTextOnline){
+		$date = date('Y-m-d G:i:s');
 		//create version
-		$addAgbToDB = "INSERT INTO `agb_tool_db`.`agb_version` (`agb_version_id`, `agb_source_id`, `text`, `version`, `published_at`) 
-							VALUES (NULL, '".$agbSourceId."', '". mysqli_real_escape_string($this->mysqli, $latestVersionTextOnline)."' ,'1', '".date('Y-m-d G:i:s')."')"; //mysql_real_escape_string -> don't use commands in string for mysql
-		mysqli_query($this->mysqli, $addAgbToDB);
+		$abfrage =$this->mysqli->prepare( "INSERT INTO `agb_tool_db`.`agb_version` (`agb_version_id`, `agb_source_id`, `text`, `version`, `published_at`) 
+							VALUES (NULL, ?, ? ,'1', ?)"); //mysql_real_escape_string -> don't use commands in string for mysql
+		$abfrage->bind_param("iss", $agbSourceId, $latestVersionTextOnline, $date);
+		$abfrage->execute();
+	}
+	
+	/**
+	* add agb_favorit entry if agb source is used first time
+	* @param $agbSourceId
+	*/
+	function addAGBFavorite($agbSourceId){
+		$date = date('Y-m-d G:i:s');
+		//create version
+		$abfrage =$this->mysqli->prepare( "INSERT INTO `agb_tool_db`.`agb_favorite` (`agb_favorite_id`, `agb_source_id`, `counter` ) 
+							VALUES (NULL, ?, NULL)"); //mysql_real_escape_string -> don't use commands in string for mysql
+		$abfrage->bind_param("i", $agbSourceId);
+		$abfrage->execute();
 	}
 	
 	/**
@@ -63,14 +89,14 @@ class AGBDBConnector
 	* @param $latestVersionTextOnline
 	*/
 	function updateAGBToDB($agbSourceId, $latestVersionTextOnline){
+		$date = date('Y-m-d G:i:s');
 		$versionCounter = $this->getLatestVersionOfDB($agbSourceId)->getVersion();
 		$versionCounter = $versionCounter+1;
-		echo $versionCounter;
 		
-		$addAgbToDB = "INSERT INTO `agb_tool_db`.`agb_version` (`agb_version_id`, `agb_source_id`, `text`, `version`, `published_at`) 
-							VALUES (NULL, '".$agbSourceId."', '".mysqli_real_escape_string($this->mysqli, $latestVersionTextOnline)."', '". $versionCounter ."', '".date('Y-m-d G:i:s')."')";
-		mysqli_query($this->mysqli, $addAgbToDB);
-		echo 'version is now up to date';
+		$abfrage = $this->mysqli->prepare("INSERT INTO `agb_tool_db`.`agb_version` (`agb_version_id`, `agb_source_id`, `text`, `version`, `published_at`) 
+							VALUES (NULL, ?, ?, ?, ?)");
+		$abfrage->bind_param("isis", $agbSourceId, $latestVersionTextOnline, $versionCounter, $date);
+		$abfrage->execute();
 	}
 	
 	/**
@@ -78,8 +104,12 @@ class AGBDBConnector
 	* @return List<AGBSource> agbSource there should be only one itme in list
 	*/
 	function getAGBSource($agbSourceId){
-		$abfrage = "SELECT * FROM agb_source WHERE agb_source_id LIKE ".$agbSourceId;
-		$ergebnis = mysqli_query($this->mysqli, $abfrage);
+		$abfrage = $this->mysqli->prepare("SELECT * FROM agb_source WHERE agb_source_id LIKE ?");
+		
+		$abfrage->bind_param("i", $agbSourceId);
+		$abfrage->execute();
+		
+		$ergebnis = $abfrage->get_result();
 		
 		//array klammern zuviel
 		return $this->sqlToAGBSourceObject($ergebnis);
@@ -97,15 +127,15 @@ class AGBDBConnector
 	}
 	
 	/**
-	 * Returns all agbSources which are on toptenlist(agb_favorite in db)
+	 * Returns the ten agbSources with highest counter(agb_favorite in db)
 	 * 
 	 * @return List<AGBSource> topTenAGBSources
 	 */
 	function getTopTenAGBSources(){
-		$abfrage = "SELECT agb_source.agb_source_id, agb_source.name, agb_source.link, agb_source.season, agb_source.xpath, agb_favorite.agb_source_id 
+		$abfrage = "SELECT agb_source.agb_source_id, agb_source.name, agb_source.link, agb_source.xpath, agb_favorite.agb_source_id 
 				FROM agb_source 
 				LEFT JOIN agb_favorite ON agb_source.agb_source_id=agb_favorite.agb_source_id 
-				Where agb_favorite.agb_favorite_id IS NOT NULL";
+				Where 1 ORDER BY `counter` DESC LIMIT 10";
 				
 		$ergebnis = mysqli_query($this->mysqli, $abfrage);
 
@@ -123,10 +153,9 @@ class AGBDBConnector
 		{
 		   $agbSourceId = $row->agb_source_id;
 		   $name = $row->name; 
-		   $link = $row->link; 
-		   $season = $row->season; 		   
+		   $link = $row->link; 		   
 		   $xPath =  $row->xpath;
-		   $agbSources[] = new AGBSource($agbSourceId, $name, $link, $season, $xPath);
+		   $agbSources[] = new AGBSource($agbSourceId, $name, $link, $xPath);
 		}
 		return $agbSources;
 	}
@@ -134,9 +163,29 @@ class AGBDBConnector
 	/**
 	* Transforms sql result into agbversion object
 	* @param $ergebnis = sql response
-	* @return List<AGBVersion>
+	* @return AGBVersion
 	*/
 	function sqlToAGBVersionObject($ergebnis){
+		$agbVersion = null;
+		while($row = mysqli_fetch_object($ergebnis))
+		{
+			$agbVersionId = $row->agb_version_id;
+			$agbSourceId =  $row->agb_source_id;
+			$text =  $row->text; //preg_replace('/\s+/', '', $row->text); //delete whitespaces
+			$version =  $row->version;
+			$publishedAt =  $row->published_at;
+			
+			$agbVersion = new AGBVersion($agbVersionId, $agbSourceId, $text, $version, $publishedAt);
+		}
+		return $agbVersion;
+	}
+	
+	/**
+	* Transforms sql result into agbversion object
+	* @param $ergebnis = sql response
+	* @return List<AGBVersion>
+	*/
+	function sqlToAGBVersionObjectArray($ergebnis){
 		$agbVersions = array();
 		while($row = mysqli_fetch_object($ergebnis))
 		{

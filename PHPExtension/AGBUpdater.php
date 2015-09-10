@@ -1,4 +1,9 @@
 <?php
+/**
+ * Updates db from sources(also db)
+ * @author rqd3-u
+ *
+ */
 echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
 header('Content-type: text/html; charset=utf-8');
 
@@ -39,29 +44,34 @@ main();
 
 			
 			echo "source ".   $agbSourceId.": ";
+			
+
+			if($latestVersionTextOnline==null){
+			  echo $agbSources[$i]->getLink();
+			  echo ' online version not available. Check xpath.';
+			}
+	
+		   //entry for this source available exists already
+		   if($latestVersionDB!=null && $latestVersionTextOnline!=null){ 
+			$latestVersionTextDB =  $latestVersionDB->getText();
+			//strcmp =0 if string equals, if online text is !=null(and db text)
+			if(strcasecmp($latestVersionTextDB,$latestVersionTextOnline )==0 ){
+				echo "agb is up to date";
+			}
+			if(strcasecmp($latestVersionTextDB,$latestVersionTextOnline )!=0 ){
+			   //update version
+			    echo 'version updating';
+				$GLOBALS['agbDBConnector']->updateAGBToDB($agbSourceId, $latestVersionTextOnline);			
+			}
+		   }
 		   
 		   //first version entry
 		   if($latestVersionDB==null){
 			   echo 'version created';
 			   $GLOBALS['agbDBConnector']->addAGBToDB($agbSourceId, $latestVersionTextOnline);
+			   $GLOBALS['agbDBConnector']->addAGBFavorite($agbSourceId);
 		   }
-		   //entry for this source available exists already
-		   if($latestVersionDB!=null){ 
-			$latestVersionTextDB =  $latestVersionDB->getText();		
-
-			if($latestVersionTextOnline==null){
-			  echo $agbSources[$i]->getLink();
-			  echo ' online version not available ';
-			}
-			//strcmp =0 if string equal
-			if(strcasecmp($latestVersionTextDB,$latestVersionTextOnline )==0){
-				echo "agb is up to date";echo $latestVersionTextOnline;
-			}
-			else{
-			   //update version
-				$GLOBALS['agbDBConnector']->updateAGBToDB($agbSourceId, $latestVersionTextOnline);
-			}
-		   }
+		   
 		   echo "</br></br>";
 		}
 	}
@@ -73,7 +83,7 @@ main();
 	*/
 	function getLatestVersionOnline($url, $xPath){
 		//get newest agb as html from website
-		$agbTextOnline = fileGetContentsUtf8($url); 
+		$agbTextOnline = fileGetContentUtf8($url); 
 
 		$doc = new DOMDocument();
 		@$doc->loadHTML($agbTextOnline);
@@ -83,18 +93,21 @@ main();
 
 	 	//trim delete spaces beginning end
 		$agbText = trim($agbText);
+		
+		$agbTextWithoutControlChar = str_replace(array("\r", "\n", "\t"), ' ', $agbText);
 
-		return $agbText;
+		return $agbTextWithoutControlChar;
 	}
 	
 	/**Request content in utf8 from url
 	*  @param $url
 	*/
-	function fileGetContentsUtf8($url) {
+	function fileGetContentUtf8($url) {
 		$opts = array(
 			'http' => array(
 				'method'=>"GET",
-				'header'=>"Content-Type: text/html; charset=UTF-8"
+				'header'=>	"Content-Type: text/html; charset=UTF-8\r\n" .
+							"User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36\r\n" //sites like facebook only give access for latest browsers
 			)
 		);
 

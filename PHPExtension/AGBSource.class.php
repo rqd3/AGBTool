@@ -1,18 +1,21 @@
 <?php
+/**
+ * AGBSource model
+ * @author rqd3-u
+ *
+ */
 class AGBSource
 {
     public $agbSourceId;
     public $name;
     public $link;
-    public $season;
 	public $xPath;
 	
-    function AGBSource($agbSourceId, $name, $link, $season, $xPath)
+    function AGBSource($agbSourceId, $name, $link, $xPath)
     {
         $this->agbSourceId  = $agbSourceId;
         $this->name         = $name;
         $this->link      = $link;
-        $this->season  = $season;
 		$this->xPath = $xPath;
     }
 
@@ -39,14 +42,6 @@ class AGBSource
     public function setLink($link)
     {
         $this->link = $link;
-    }
-    public function getSeason()
-    {
-        return $this->season;
-    }
-    public function setSeason($season)
-    {
-        $this->season = $season;
     }
 	public function getXPath()
     {
