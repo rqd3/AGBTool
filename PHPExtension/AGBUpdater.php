@@ -17,6 +17,7 @@ main();
 	Start function
 	*/
 	function main(){
+		set_time_limit(120000);
 		$GLOBALS['agbDBConnector'] = new AGBDBConnector();
 		
 		if($GLOBALS['agbDBConnector'] != false){
@@ -48,7 +49,7 @@ main();
 
 			if($latestVersionTextOnline==null){
 			  echo $agbSources[$i]->getLink();
-			  echo ' online version not available. Check xpath.';
+			  echo ' online version not available. Check xpath and if user agents in fileGetContentUtf8($url) are up to date';
 			}
 	
 		   //entry for this source available exists already
@@ -86,11 +87,12 @@ main();
 		$agbTextOnline = fileGetContentUtf8($url); 
 
 		$doc = new DOMDocument();
-		@$doc->loadHTML($agbTextOnline);
+		@$doc->loadHTML($agbTextOnline); //@is important
+	 
 	 
 		$domXPath = new DOMXPath($doc);
 		$agbText = $domXPath->evaluate('string('.$xPath.')'); //string(/html/head/title)'
-
+		
 	 	//trim delete spaces beginning end
 		$agbText = trim($agbText);
 		
@@ -107,7 +109,7 @@ main();
 			'http' => array(
 				'method'=>"GET",
 				'header'=>	"Content-Type: text/html; charset=UTF-8\r\n" .
-							"User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36\r\n" //sites like facebook only give access for latest browsers
+							"User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36\r\n" //sites like facebook only give access for latest browsers
 			)
 		);
 

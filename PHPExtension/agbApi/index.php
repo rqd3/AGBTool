@@ -85,41 +85,35 @@ $app->notFound(function () use ($app) {
 //get all agbsources
 $app->get('/api1.0/agbsources/', function () {
 	$agbSources = $GLOBALS['agbDBConnector']->getAllAGBSources();
-	echo '<pre>';
+
     echo json_encode($agbSources,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	echo '<pre>';
+	
 });
 
 //get single agbsource by agbsourceid
 $app->get('/api1.0/agbsources/:agbsourceid', function ($agbSourceId) {
 	$agbSources = $GLOBALS['agbDBConnector']->getAGBSource($agbSourceId);
-	echo '<pre>';
+
     echo json_encode($agbSources,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	echo '<pre>';
 });
 
 //get latest agbversion
 $app->get('/api1.0/agbversions/latest/:agbsourceid', function ($agbSourceId) {
 	$latestAgbVersion = $GLOBALS['agbDBConnector']->getLatestVersionOfDB($agbSourceId);
-	echo '<pre>';
     echo json_encode($latestAgbVersion,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	echo '<pre>';
+
 });
 
 //get all versions of agbSource sorted by date. latest first.
 $app->get('/api1.0/agbversions/:agbsourceid', function ($agbSourceId) {
 	$versionsOfAGBSource = $GLOBALS['agbDBConnector']->getVersionsOfAGBSource($agbSourceId);
-	echo '<pre>';
     echo json_encode($versionsOfAGBSource,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	echo '<pre>';
 });
 
 //get top ten agbsources  
 $app->get('/api1.0/agbsources/topten/', function () {
 	$agbSources = $GLOBALS['agbDBConnector']->getTopTenAGBSources();
-	echo '<pre>';
     echo json_encode($agbSources, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	echo '<pre>';
 });
 
 //@TODO AGBSource(sourceName), agbVersion(agbSourceId, version)
