@@ -20,9 +20,9 @@ public class APIController {
 		jsonController = new JSONController();
 
 		//testing
-		//getAllAGBVersionsOfSource(4);
-		//System.out.println(getLatestAGBVersion(39).getText());
-		//getLatestAGBVersion(2).getText();
+		//getAllAGBVersionsOfSource(45);
+		//System.out.println(getLatestAGBVersion(40).getText());
+		//getLatestAGBVersion(40).getText();
 		//getAllAGBSources();
 	}
 	
@@ -74,15 +74,19 @@ public class APIController {
 		String sUrl = "http://localhost/agbApi/api1.0/agbversion/"+sourceId; 
 		
 		AGBVersion latestAgbVersion =null;
+		
 		try {
+			
 			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
 			latestAgbVersion = jsonController.jsonToAGBVersion(jsonElement);
 			
-			//System.out.println(jsonController.jsonToAGBVersion(jsonController.getJsonElementFromUrl(sUrl)));
+			System.out.println(jsonController.jsonToAGBVersion(jsonController.getJsonElementFromUrl(sUrl)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 		return latestAgbVersion;
 	}
 	
@@ -106,8 +110,8 @@ public class APIController {
 		}
 		return agbVersions;
 		
-		
 	}
-
+	
+	
 
 }
