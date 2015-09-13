@@ -88,7 +88,7 @@ public class APIController {
 	}
 	
 	/**
-	 * Get all versions of one source
+	 * Get all versions of one source sorted by date. 0 = newest version and so on..
 	 * Count in agb_favorite +1
 	 * 
 	 * @param sourceName
