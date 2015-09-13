@@ -1,6 +1,25 @@
 package com.client;
 
-import AGBTool.src.com.shared.FieldVerifier;
+import java.util.List;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.shared.FieldVerifier;
+import com.shared.models.AGBSource;
+import com.shared.models.AGBVersion;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -17,8 +36,8 @@ public class AGBTool implements EntryPoint {
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
+	private final AGBToolServiceAsync agbToolService = GWT
+			.create(AGBToolService.class);
 
 	/**
 	 * This is the entry point method.
@@ -110,7 +129,7 @@ public class AGBTool implements EntryPoint {
 				serverResponseLabel.setText("");
 				
 				
-				greetingService.greetServer(textToServer,
+				agbToolService.greetServer(textToServer,
 						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {
 								// Show the RPC error message to the user
@@ -132,8 +151,35 @@ public class AGBTool implements EntryPoint {
 								closeButton.setFocus(true);
 							}
 						});
-			}
+			
+			//For Johanna: den nachfolgenden rpc call teil fügst du einfach dort ein bei welchem event er ausgeführt werden soll. Hier z.b. beim drücken des buttons
+			agbToolService.getTopTenAGBs( new AsyncCallback<List<AGBSource>>() {
+						public void onFailure(Throwable caught) {
+							// Show the RPC error message to the user
+							dialogBox
+									.setText("Remote Procedure Call - Failure");
+							serverResponseLabel
+									.addStyleName("serverResponseLabelError");
+							serverResponseLabel.setHTML(SERVER_ERROR);
+							dialogBox.center();
+							closeButton.setFocus(true);
+						}
+
+						public void onSuccess(List<AGBSource> topTenAGBVersions) {
+							dialogBox.setText("Remote Procedure Call");
+							
+							
+							//wichtig
+							serverResponseLabel.setHTML(topTenAGBVersions.get(0).getName());
+							
+							
+							dialogBox.center();
+							closeButton.setFocus(true);
+						}
+					});
 		}
+		}
+		
 
 		// Add a handler to send the name to the server
 		MyHandler handler = new MyHandler();

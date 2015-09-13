@@ -13,12 +13,12 @@
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/agbtool/greet</url-pattern>
+    <url-pattern>/agbtool2/greet</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>AGBTool.html</welcome-file>
+    <welcome-file>AGBTool2.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
