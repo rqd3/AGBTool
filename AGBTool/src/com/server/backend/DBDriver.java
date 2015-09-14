@@ -289,7 +289,7 @@ public class DBDriver {
 
 			ResultSet resultSet = preparedStatement.getResultSet();
 			if (resultSet.next()) {
-				counter = Integer.valueOf(resultSet.getString("counter"));
+				counter = Integer.valueOf(resultSet.getInt("counter"));
 			}
 
 		} catch (SQLException e) {
