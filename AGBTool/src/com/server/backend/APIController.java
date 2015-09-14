@@ -36,9 +36,7 @@ public class APIController {
 		System.out.println("getall");
 		List<AGBSource> agbSources =null;
 		try {
-			System.out.println("vor jsonelemenet");
 			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
-			System.out.println("testjson"+jsonElement);
 			agbSources = jsonController.jsonToAGBSources(jsonElement);
 			
 		} catch (IOException e) {

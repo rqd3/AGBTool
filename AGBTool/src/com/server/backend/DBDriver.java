@@ -32,29 +32,34 @@ public class DBDriver {
 	 */
 	public DBDriver() {
 
+		connectToDB();
+	}
+
+	/**
+	 * Connect to DB
+	 * 
+	 * @return true if success
+	 */
+	public boolean connectToDB() {
 		try {
 			// register driver
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			System.out.println("Where is your MySQL JDBC Driver?");
 			e.printStackTrace();
-			return;
+			return false;
 		}
 		System.out.println("MySQL JDBC Driver Registered!");
 
 		try {
 			connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/agb_tool_db", "root", "");
-
-			// testing
-
-			// setAGBAdvice("https://www.youtube.com/watch?v=CGCMl-K09vg");
-			
+			return true;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-
 	}
 
 	/**
@@ -87,8 +92,8 @@ public class DBDriver {
 	}
 
 	/**
-	 * @deprecated Get all agb versions of one agb source by name. Transform them
-	 *             into AGBVersionModels and add them to a list.
+	 * @deprecated Get all agb versions of one agb source by name. Transform
+	 *             them into AGBVersionModels and add them to a list.
 	 * @param String
 	 *            sourceName
 	 * @return List<AGBVersion> allAGBVersions
@@ -159,7 +164,7 @@ public class DBDriver {
 	 * 
 	 * @param String
 	 *            link to agb
-	 * @return Boolean
+	 * @return Boolean true if success else false
 	 */
 	public boolean setAGBAdvice(String link) {
 
@@ -175,7 +180,7 @@ public class DBDriver {
 				preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.setString(1, link);
 				preparedStatement.setString(2, dateFormated);
-				
+
 				preparedStatement.execute();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -189,11 +194,36 @@ public class DBDriver {
 	}
 
 	/**
+	 * Deletes an agb advice from table agb_advice, if deleted return true
+	 * 
+	 * @param String
+	 *            link to agb
+	 * @return Boolean true if success else false
+	 */
+	public boolean deleteAGBAdvice(String link) {
+
+		String sql = "DELETE FROM agb_tool_db.agb_advice WHERE `link` LIKE ?";
+
+		PreparedStatement preparedStatement;
+		try {
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, link);
+
+			preparedStatement.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Checks if string is a reachable url
 	 * 
 	 * @param String
 	 *            url
-	 * @return true = valid
+	 * @return true = valid false = invalid
 	 */
 	public boolean isUrlReachable(String url) {
 		boolean validState = false;
@@ -217,36 +247,37 @@ public class DBDriver {
 
 		return validState;
 	}
-	
+
 	/**
-	 * counter for agb favorite. Everytime a agbversion is used count +1 an write to db
+	 * counter for agb favorite. Everytime a agbversion is used count +1 an
+	 * write to db
 	 * 
 	 * @param agbSourceId
 	 */
-	public void countAGBSourceCalls(int agbSourceId){
+	public void countAGBSourceCalls(int agbSourceId) {
 		String sql = "UPDATE  agb_tool_db.agb_favorite SET  `counter` = ? WHERE `agb_source_id` like ?";
 
 		PreparedStatement preparedStatement;
 		try {
-			int counter = getCounterFromAGBFavorite(agbSourceId)+1;
-			
+			int counter = getCounterFromAGBFavorite(agbSourceId) + 1;
+
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, counter);
-			preparedStatement.setInt(2, agbSourceId);			
-			
+			preparedStatement.setInt(2, agbSourceId);
+
 			preparedStatement.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Gets the value of the column 'counter' for a specific agbSource
 	 * 
 	 * @param agbSourceId
 	 */
-	public int getCounterFromAGBFavorite(int agbSourceId){
+	public int getCounterFromAGBFavorite(int agbSourceId) {
 		int counter = 0;
 		String sql = "SELECT `counter` FROM `agb_favorite` WHERE `agb_source_id` like ?";
 
@@ -255,12 +286,12 @@ public class DBDriver {
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, agbSourceId);
 			preparedStatement.execute();
-			
+
 			ResultSet resultSet = preparedStatement.getResultSet();
-			if(resultSet.next()){
+			if (resultSet.next()) {
 				counter = Integer.valueOf(resultSet.getString("counter"));
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
