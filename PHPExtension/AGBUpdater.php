@@ -39,12 +39,13 @@ main();
 		for($i=0; $i<$max; $i++)
 		{
 		   $agbSourceId = $agbSources[$i]->getAgbSourceId();
+		   $agbName =  $agbSources[$i]->getName();
 
 		   $latestVersionDB = $GLOBALS['agbDBConnector']->getLatestVersionOfDB($agbSourceId);
 		   $latestVersionTextOnline = getLatestVersionOnline($agbSources[$i]->getLink(), $agbSources[$i]->getXPath());
 
 			
-			echo "source ".   $agbSourceId.": ";
+			echo " Id: ".  $agbSourceId. "source: ". $agbName. " : " ;
 			
 
 			if($latestVersionTextOnline==null){
@@ -109,12 +110,15 @@ main();
 			'http' => array(
 				'method'=>"GET",
 				'header'=>	"Content-Type: text/html; charset=UTF-8\r\n" .
-							"User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36\r\n" //sites like facebook only give access for latest browsers
+							"User-Agent:Chrome/44.0.2403.157 Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0 AppleWebKit/537.36 (KHTML, like Gecko) Safari/537.36\r\n" //sites like facebook only give access for latest browsers
+				
 			)
 		);
 
 		$context = stream_context_create($opts);
 		$result = @file_get_contents($url,false,$context);
+		print_r(get_headers($url, 1)[0]);
+		//var_dump($http_response_header);
 		return $result;
 	} 
 

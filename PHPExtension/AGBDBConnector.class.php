@@ -41,6 +41,21 @@ class AGBDBConnector
 		return $this->sqlToAGBVersionObject($ergebnis);
 	}
 	
+	/* Get latest agb versions of all agb sources
+	*  @Return List<AGBVersion> $latestVersiontDB
+	*/
+	function getLatestVersionsOfDB(){
+		//Select row with max published_at value
+		$abfrage = "SELECT  agb_version_id, agb_version.agb_source_id, text, MAX(version) AS version, published_at 
+											FROM agb_version
+											LEFT JOIN agb_source ON agb_version.agb_source_id=agb_source.agb_source_id 
+											GROUP BY agb_source.agb_source_id";
+		
+		$ergebnis = mysqli_query($this->mysqli, $abfrage);
+
+		return $this->sqlToAGBVersionObjectArray($ergebnis);
+	}
+	
 	/* Get all versions of an agb source
 	*  @param $agbSourceId
 	*  @Return AGBVersion[] $versionsOfAGBSource

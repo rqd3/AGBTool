@@ -19,12 +19,7 @@ public class APIController {
 
 	public APIController() {
 		jsonController = new JSONController();
-
-		//testing
-		//getAllAGBVersionsOfSource(4);
-		//System.out.println(getLatestAGBVersion(39).getText());
-		//getLatestAGBVersion(2).getText();
-		//getAllAGBSources();
+		dbDriver = new DBDriver();
 	}
 	
 	/**
@@ -72,19 +67,39 @@ public class APIController {
 	 * @return AGBVersion> latest agbVersion
 	 */
 	public AGBVersion getLatestAGBVersion(int sourceId) {
-		String sUrl = "http://localhost/agbApi/api1.0/agbversions/latest"+sourceId; 
+		String sUrl = "http://localhost/agbApi/api1.0/agbversions/latest/"+sourceId; 
 		
 		AGBVersion latestAgbVersion =null;
 		try {
 			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
 			latestAgbVersion = jsonController.jsonToAGBVersion(jsonElement);
 			
-			//System.out.println(jsonController.jsonToAGBVersion(jsonController.getJsonElementFromUrl(sUrl)));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		dbDriver.countAGBSourceCalls(sourceId);
+		return latestAgbVersion;
+	}
+	
+	/**
+	 * Get latest agbVersion of all sources
+	 * Count in agb_favorite +1
+	 * @return AGBVersion> latest agbVersion
+	 */
+	public List<AGBVersion> getLatestAGBVersions() {
+		String sUrl = "http://localhost/agbApi/api1.0/agbversions/latest/"; 
+		
+		List<AGBVersion> latestAgbVersion =null;
+		try {
+			JsonElement jsonElement = jsonController.getJsonElementFromUrl(sUrl);
+			latestAgbVersion = jsonController.jsonToAGBVersions(jsonElement);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return latestAgbVersion;
 	}
 	

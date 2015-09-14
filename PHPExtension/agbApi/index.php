@@ -104,6 +104,13 @@ $app->get('/api1.0/agbversions/latest/:agbsourceid', function ($agbSourceId) {
 
 });
 
+//get latest agbversions of all sources
+$app->get('/api1.0/agbversions/latest/', function () {
+	$latestAgbVersions = $GLOBALS['agbDBConnector']->getLatestVersionsOfDB();
+    echo json_encode($latestAgbVersions,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+});
+
 //get all versions of agbSource sorted by date. latest first.
 $app->get('/api1.0/agbversions/:agbsourceid', function ($agbSourceId) {
 	$versionsOfAGBSource = $GLOBALS['agbDBConnector']->getVersionsOfAGBSource($agbSourceId);
