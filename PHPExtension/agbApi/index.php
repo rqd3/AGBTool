@@ -81,13 +81,13 @@ $app->notFound(function () use ($app) {
  * is an anonymous function.
  */
 
-
+echo "<pre>";
 //get all agbsources
 $app->get('/api1.0/agbsources/', function () {
 	$agbSources = $GLOBALS['agbDBConnector']->getAllAGBSources();
 
     echo json_encode($agbSources,  JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-	
+
 });
 
 //get single agbsource by agbsourceid
@@ -122,7 +122,7 @@ $app->get('/api1.0/agbsources/topten/', function () {
 	$agbSources = $GLOBALS['agbDBConnector']->getTopTenAGBSources();
     echo json_encode($agbSources, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 });
-
+echo "<pre>";
 //@TODO AGBSource(sourceName), agbVersion(agbSourceId, version)
 
 /**

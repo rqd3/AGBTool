@@ -10,6 +10,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -43,10 +45,14 @@ public class JSONController {
 	    HttpURLConnection request = (HttpURLConnection) purl.openConnection();
 	    request.connect();
 
+	    String json = IOUtils.toString((InputStream) request.getInputStream(), "UTF-8");
+	    json = json.replace("<pre>","");
+
+	    System.out.println(json);
 	    // Convert to a JSON object to print data
 	    JsonParser jp = new JsonParser(); //from gson
-	    JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getInputStream(),"UTF-8")); //Convert the input stream to a json element
-	    System.out.println("root"+root.toString());
+	    JsonElement root = jp.parse(json); //Convert the input stream to a json element
+
 	    return root;
 	}
 		
