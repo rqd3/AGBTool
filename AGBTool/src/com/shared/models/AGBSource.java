@@ -14,7 +14,7 @@ public class AGBSource implements Serializable {
 	 */
 
 	
-	private int id;
+	private int agbSourceId;
 	
 	private String name;
 	
@@ -29,18 +29,18 @@ public class AGBSource implements Serializable {
 	
 	public AGBSource(int id, String name, String link, String xPath) {
 		super();
-		this.id = id;
+		this.agbSourceId = id;
 		this.name = name;
 		this.link = link;
 		this.xPath = xPath;
 	}
 
 	public int getId() {
-		return id;
+		return agbSourceId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.agbSourceId = id;
 	}
 
 	public String getName() {
@@ -70,7 +70,7 @@ public class AGBSource implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AGBSource [id=" + id + ", name=" + name + ", link=" + link + ", xPath=" + xPath
+		return "AGBSource [id=" + agbSourceId + ", name=" + name + ", link=" + link + ", xPath=" + xPath
 				+ "]";
 	}
 	
