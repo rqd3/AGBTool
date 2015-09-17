@@ -22,4 +22,6 @@ public interface AGBToolService extends RemoteService {
 	List<AGBVersion> getAllAGBVersionsOfSource(int sourceId) throws IllegalArgumentException;
 	
 	List<AGBVersion> getLatestAGBVersions() throws IllegalArgumentException;
+	
+	List<String> getAGBDifferencesForDemo(int sourceId, int version1, int version2) throws IllegalArgumentException;
 }

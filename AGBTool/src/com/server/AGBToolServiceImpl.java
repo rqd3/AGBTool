@@ -2,6 +2,7 @@ package com.server;
 
 import java.util.List;
 
+import com.agb.compare.AGBComparator;
 import com.client.AGBToolService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.server.backend.APIController;
@@ -68,7 +69,7 @@ public class AGBToolServiceImpl extends RemoteServiceServlet implements
 				.replaceAll(">", "&gt;");
 	}
 
-	@Override
+
 	public List<AGBSource> getAllAGBs() throws IllegalArgumentException {
 		APIController apiController = new APIController();
 		
@@ -77,7 +78,7 @@ public class AGBToolServiceImpl extends RemoteServiceServlet implements
 	
 
 
-	@Override
+
 	public List<AGBVersion> getAllAGBVersionsOfSource(int sourceId)
 			throws IllegalArgumentException {
 			APIController apiController = new APIController();
@@ -85,12 +86,19 @@ public class AGBToolServiceImpl extends RemoteServiceServlet implements
 		return apiController.getAllAGBVersionsOfSource(sourceId);
 	}
 
-	@Override
+
 	public List<AGBVersion> getLatestAGBVersions()
 			throws IllegalArgumentException {
 		APIController apiController = new APIController();
 		
 		return apiController.getLatestAGBVersions();
+	}
+	
+	
+	public List<String> getAGBDifferencesForDemo(int sourceId, int version1, int version2) throws IllegalArgumentException {
+		AGBComparator agbComparator = new AGBComparator();
+		
+		return agbComparator.getAGBDifferencesForDemo(sourceId, version1, version2);
 	}
 	
 }

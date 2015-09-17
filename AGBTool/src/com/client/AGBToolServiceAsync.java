@@ -21,4 +21,6 @@ public interface AGBToolServiceAsync {
 	void getAllAGBVersionsOfSource (int sourceId, AsyncCallback<List<AGBVersion>> callback) throws IllegalArgumentException;
 	
 	void getLatestAGBVersions( AsyncCallback<List<AGBVersion>> callback) throws IllegalArgumentException;
+	
+	void getAGBDifferencesForDemo(int sourceId, int version1, int version2, AsyncCallback<List<String>> callback) throws IllegalArgumentException;
 }
