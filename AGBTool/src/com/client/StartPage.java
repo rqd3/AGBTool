@@ -2,6 +2,7 @@ package com.client;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.shared.models.AGBSource;
+import com.shared.models.AGBVersion;
 
 public class StartPage extends Composite{
 
@@ -109,7 +111,7 @@ public class StartPage extends Composite{
 		    	    AllAGBList.setSelectionModel(selectionModel2);
 		    	    selectionModel2.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 		    	      public void onSelectionChange(SelectionChangeEvent event) {
-		    	        String selected = selectionModel2.getSelectedObject();
+		    	        final String selected = selectionModel2.getSelectedObject();
 		    	        if(selected != null) {
 		    	        //Gewählte AGB zum übergeben speichern
 		    	        AGBSource selectedAgb = null;
@@ -119,15 +121,27 @@ public class StartPage extends Composite{
 		    	        	}
 		    	        	
 		    	        } 
-		    	        //DialogBox erstellen
-		    	        final DialogBox dialogBox2 = ComparePage.CreateDialogBox(selectedAgb);
-		    		    dialogBox2.setGlassEnabled(true);
-		    		    dialogBox2.setAnimationEnabled(true);
-		    		        
-		    		    if (selected != null) {
-		    		        dialogBox2.center();
-		    		        dialogBox2.show();
-		    		    }
+		    	        
+		    	        agbToolService.getAllAGBVersionsOfSource(selectedAgb.getId(),new AsyncCallback<List<AGBVersion>>() {
+		    				public void onFailure(Throwable caught) {
+		    					serverResponseLabel.addStyleName("serverResponseLabelError");
+		    					serverResponseLabel.setHTML(SERVER_ERROR);
+		    				}
+		    				public void onSuccess(List<AGBVersion> allAgbVersions) {
+				    	        //DialogBox erstellen -> auf Klasse ComparePage zugreifen
+				    	        final DialogBox dialogBox = ComparePage.CreateDialogBox(selected, allAgbVersions);
+						        dialogBox.setGlassEnabled(true);
+						        dialogBox.setAnimationEnabled(true);
+						        
+						        if (selected != null) {
+						        	dialogBox.center();
+						            dialogBox.show();
+						        }
+		    					serverResponseLabel.setHTML(String.valueOf(allAgbVersions.get(1).getAgbSourceId()));
+		    				}
+		    			});
+		    	        
+		    	        
 		    	        }
 		    	      }
 		    	    });
@@ -181,9 +195,9 @@ public class StartPage extends Composite{
 			    topTenCellList.setSelectionModel(selectionModel);
 			    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			      public void onSelectionChange(SelectionChangeEvent event) { 
-			        String selected = selectionModel.getSelectedObject();
-			        if(selected != null) {
-			        	 selected = selected.split(" ")[1];
+			        String selection = selectionModel.getSelectedObject();
+			        if(selection != null) {
+			        	 final String selected = selection.split(" ")[1];
 					        AGBSource selectedAgb = null;
 					        
 					        //In den gespeicherten AGBs die ausgewählte suchen
@@ -194,19 +208,33 @@ public class StartPage extends Composite{
 			    	        	
 			    	        } 
 			    	        
-			    	        //DialogBox erstellen -> auf Klasse ComparePage zugreifen
-			    	        final DialogBox dialogBox = ComparePage.CreateDialogBox(selectedAgb);
-					        dialogBox.setGlassEnabled(true);
-					        dialogBox.setAnimationEnabled(true);
+			    	        agbToolService.getAllAGBVersionsOfSource(selectedAgb.getId(),new AsyncCallback<List<AGBVersion>>() {
+			    				public void onFailure(Throwable caught) {
+			    					serverResponseLabel.addStyleName("serverResponseLabelError");
+			    					serverResponseLabel.setHTML(SERVER_ERROR);
+			    				}
+			    				public void onSuccess(List<AGBVersion> allAgbVersions) {
+					    	        //DialogBox erstellen -> auf Klasse ComparePage zugreifen
+					    	        final DialogBox dialogBox = ComparePage.CreateDialogBox(selected, allAgbVersions);
+							        dialogBox.setGlassEnabled(true);
+							        dialogBox.setAnimationEnabled(true);
+							        
+							        if (selected != null) {
+							        	dialogBox.center();
+							            dialogBox.show();
+							        }
+			    					serverResponseLabel.setHTML(String.valueOf(allAgbVersions.get(1).getAgbSourceId()));
+			    				}
+			    			});
+			    	       
 					        
-					        if (selected != null) {
-					        	dialogBox.center();
-					            dialogBox.show();
-					        }
+					        
 			        }
 			       
 			      }
+
 			    });
+
 			    topTenCellList.setRowCount(topTenNameList.size(), true);
 			    topTenCellList.setRowData(0, topTenNameList);
 			    

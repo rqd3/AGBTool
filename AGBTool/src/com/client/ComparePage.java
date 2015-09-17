@@ -1,5 +1,6 @@
 package com.client;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,45 +27,29 @@ public class ComparePage extends Composite {
 	private final static AGBToolServiceAsync agbToolService = GWT.create(AGBToolService.class);
 	final static HTML serverResponseLabel = new HTML();
 	
-	//alle Widgets, um im Handler darauf zugreifen zu können static
-	static DialogBox compareDialog = new DialogBox();
-	static AGBVersion selectedVersion = null;
-	static TextArea changedText = new TextArea();
-	//static ListBox list = new ListBox();
-	static TextArea agbText = new TextArea();
-	
-	//Für die Demo
-	static int changesCount = 1;
-	
-	//Parameter zum speichern aller Versionen
-	private static List<AGBVersion> AllVersions = null;
-	
-	public static DialogBox CreateDialogBox(AGBSource agbS) {
-		//DialogBox erstellen
+	public static DialogBox CreateDialogBox(String name, List<AGBVersion> AllVersions) {
+		
 		final DialogBox compareDialog = new DialogBox();
-		compareDialog.setText("Compare Dialog Box - " + agbS.getName());
-		
-		//Alle AGBVersionen zu der übergebenen AGBVersion holen
-		agbToolService.getAllAGBVersionsOfSource(agbS.getId(),new AsyncCallback<List<AGBVersion>>() {
-			public void onFailure(Throwable caught) {
-				// Show the RPC error message to the user
-
-				serverResponseLabel.addStyleName("serverResponseLabelError");
-				serverResponseLabel.setHTML(SERVER_ERROR);
-			}
-			public void onSuccess(List<AGBVersion> allAgbVersions) {
-				AllVersions = allAgbVersions;
-				serverResponseLabel.setHTML(String.valueOf(allAgbVersions.get(0).getAgbSourceId()));
-			}
-		});
+		AGBVersion selectedVersion = null;
+		final TextArea changedText = new TextArea();
+		//static ListBox list = new ListBox();
+		TextArea agbText = new TextArea();
+		//Für die Demo
+		int changesCount = 1;
+		//Parameter zum speichern aller Versionen
 		
 		
+		//DialogBox erstellen
+		///final DialogBox compareDialog = new DialogBox();
+		compareDialog.setText("Compare Dialog Box - " + name);
 		
 		
+		List<AGBVersion> allOfAGB = AllVersions;
+		 
 		
 		//if um herauszufinden ob genug Versionen für einen Vergleich vorhanden sind
 		//Keine Möglichkeit zum Vergleich!
-		if(AllVersions.size() == 1 || AllVersions.size() == 0) {
+		if(allOfAGB.size() == 1 || allOfAGB.size() == 0) {
 			VerticalPanel vPanel = new VerticalPanel();
 			vPanel.setSpacing(5);
 			compareDialog.setWidget(vPanel);
@@ -202,7 +187,7 @@ public class ComparePage extends Composite {
 			Date date = null;
 			AGBVersion last = null;
 			//Letzte AGBVersion herausziehen
-			for(AGBVersion v: AllVersions) {
+			for(AGBVersion v: allOfAGB) {
 				if(date != null) {
 					if(date.before(v.getPublishedAt())) {
 						date = v.getPublishedAt();
@@ -216,7 +201,7 @@ public class ComparePage extends Composite {
 			}
 			//Letzte Version automatisch als gesetzte Wählen
 			selectedVersion = last;
-			
+			final AGBVersion selectedV = selectedVersion;
 	    	
 	    	HorizontalPanel hPanel = new HorizontalPanel();
 			hPanel.setSpacing(10);
@@ -247,7 +232,7 @@ public class ComparePage extends Composite {
 		    
 		    
 		    //TextArea um die ausgewählten AGBs anzuzeigen
-			agbText.setText(selectedVersion.getText());
+			agbText.setText(selectedV.getText());
 			agbText.setReadOnly(true);
 			agbText.setSize("350px", "400px");
 			
@@ -291,10 +276,12 @@ public class ComparePage extends Composite {
 			agbVersion.setSpacing(5);
 			agbChanges.add(nextChange);
 			agbChanges.add(changedText);
+			agbChanges.add(closeButton);
+			
 			
 			hPanel.add(agbVersion);
 			hPanel.add(agbChanges);
-			hPanel.add(closeButton);
+			
 			
 			
 		}
