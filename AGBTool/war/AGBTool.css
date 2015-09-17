@@ -17,7 +17,7 @@ h1 {
 
 /** Most GWT widgets already have a style name defined */
 .gwt-DialogBox {
-  width: 400px;
+  width: 12000px;
 }
 
 .dialogVPanel {
@@ -32,3 +32,10 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.Header {
+	font-size: 13pt;
+	font-weigth: bold;
+}
+
+.center{ margin: 0px auto; width: 480px; text-align:left; }

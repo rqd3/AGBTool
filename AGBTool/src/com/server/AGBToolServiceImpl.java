@@ -7,6 +7,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.server.backend.APIController;
 import com.shared.FieldVerifier;
 import com.shared.models.AGBSource;
+import com.shared.models.AGBVersion;
 
 /**
  * The server-side implementation of the RPC service.
@@ -66,4 +67,30 @@ public class AGBToolServiceImpl extends RemoteServiceServlet implements
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");
 	}
+
+	@Override
+	public List<AGBSource> getAllAGBs() throws IllegalArgumentException {
+		APIController apiController = new APIController();
+		
+		return apiController.getAllAGBSources();
+	}
+	
+
+
+	@Override
+	public List<AGBVersion> getAllAGBVersionsOfSource(int sourceId)
+			throws IllegalArgumentException {
+			APIController apiController = new APIController();
+		
+		return apiController.getAllAGBVersionsOfSource(sourceId);
+	}
+
+	@Override
+	public List<AGBVersion> getLatestAGBVersions()
+			throws IllegalArgumentException {
+		APIController apiController = new APIController();
+		
+		return apiController.getLatestAGBVersions();
+	}
+	
 }
