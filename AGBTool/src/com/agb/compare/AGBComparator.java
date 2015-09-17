@@ -135,12 +135,12 @@ public class AGBComparator implements AGBCompare
 		// allAGBVersions[1], Version 2
 		// allAGBVersions[2], Version 1
 		allAGBVersions = sources.split("],");
-		System.out.println("Array-Laenge: " + allAGBVersions.length);
+		//System.out.println("Array-Laenge: " + allAGBVersions.length);
 		int counter = allAGBVersions.length;
 		//System.out.println("Counter-Laenge: " + counter);
 		
 		allAGBVersionsCorrectOrder = new String[counter+1];
-		System.out.println("Array-Laenge: " + allAGBVersionsCorrectOrder.length);
+		//System.out.println("Array-Laenge: " + allAGBVersionsCorrectOrder.length);
 		int counter2 = counter;
 		
 		for (int i = 0; i < allAGBVersions.length; i++)
@@ -158,20 +158,20 @@ public class AGBComparator implements AGBCompare
 			
 		}*/
 		
-		System.out.print("Korrigierte Arraylaenge: " + allAGBVersionsCorrectOrder.length);
+		//System.out.print("Korrigierte Arraylaenge: " + allAGBVersionsCorrectOrder.length);
 		
 		for (int i = 1; i < allAGBVersionsCorrectOrder.length; i++)
 		{
 			if (i == version1)
 			{
 				agbtext1 = allAGBVersionsCorrectOrder[i];
-				System.out.println("AGB1-Version gesetzt: ");
+				//System.out.println("AGB1-Version gesetzt: ");
 			}
 			
 			if (i == version2)
 			{
 				agbtext2 = allAGBVersionsCorrectOrder[i];
-				System.out.println("AGB2-Version gesetzt: ");
+				//System.out.println("AGB2-Version gesetzt: ");
 			}
 			else
 			{
@@ -201,7 +201,7 @@ public class AGBComparator implements AGBCompare
 		    
 		    if (Character.isLetterOrDigit(part.charAt(0)))
 		    {
-		    	System.out.println(part);
+		    	//System.out.println(part);
 		    	agbversion1.add((String)part);
 		    } // endif
 		      
@@ -226,7 +226,7 @@ public class AGBComparator implements AGBCompare
 		    
 		    if (Character.isLetterOrDigit(part.charAt(0)))
 		    {
-		    	System.out.println(part);
+		    	//System.out.println(part);
 		    	agbversion2.add((String)part);
 		    } // endif
 		      
@@ -329,7 +329,7 @@ public class AGBComparator implements AGBCompare
 		
 		 for (Delta delta: patch1.getDeltas()) 
 		 {
-           System.out.println(delta + LINE_SEPARATOR);
+           //System.out.println(delta + LINE_SEPARATOR);
            versionDifferences.add(delta.toString());
         }
 		
@@ -462,7 +462,7 @@ public class AGBComparator implements AGBCompare
 		
 		String filename = "AGB-Versions-Aenderungen2.txt";
 		
-		System.out.println("Schreibe Textdatei mit Aenderungen: ");
+		//System.out.println("Schreibe Textdatei mit Aenderungen: ");
 		
 		try 
 		{

@@ -103,6 +103,22 @@ public class AGBComparatorTest
 		*/
 		
 		c1.getAGBDifferencesForDemo(42, 1, 2);
+		
+		/*
+		// Test Get
+		System.out.println("");
+		System.out.println("Test Rueckgabe - getAGBDifferencesForDemo");
+		System.out.println("");
+		
+		List <String> list = new ArrayList<String>();
+		list = c1.getAGBDifferencesForDemo(42, 1, 2);
+		
+		Iterator iter = list.iterator();
+		while (iter.hasNext())
+		{
+			System.out.println(iter.next());
+		}
+		*/
 				
 	} //endmethod main
 	
