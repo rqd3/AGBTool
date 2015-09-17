@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.agb.compare.AGBComparator;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -35,7 +36,7 @@ public class ComparePage extends Composite {
 		//static ListBox list = new ListBox();
 		TextArea agbText = new TextArea();
 		//Für die Demo
-		int changesCount = 1;
+		final int changesCount = 1;
 		//Parameter zum speichern aller Versionen
 		
 		
@@ -80,11 +81,21 @@ public class ComparePage extends Composite {
 		
 		
 		//Der Vergleich wird angezeigt - 
-		//Code um Test vorzuführen bitt normalerweise auskommentiert lassen oder löschen 
-	/*	else if(agbS.getId() == 42) {
+		//Code um Test vorzuführen bitt normalerweise auskommentiert lassen oder löschen
+		/*AGBSource agbS = null;
+		if(agbS.getId() == 42) {
 			
-			AGBComparator a = new AGBComparator();
-			final List<String> difForDemo = a.getAGBDifferencesForDemo(42, 1, 1);
+			//AGBComparator a = new AGBComparator();
+			//final List<String> difForDemo = a.getAGBDifferencesForDemo(42, 1, 2);
+			final List <String> difForDemo = new ArrayList<String>();
+					agbToolService.getAGBDifferencesForDemo(42, 1, 2,new AsyncCallback<List<String>>() {
+				public void onFailure(Throwable caught) {
+				//do sth.
+				}
+				public void onSuccess(List<String> allAgbVersions) {
+				//do sth.
+				}
+				});
 			
 		
 			Date date = null;
@@ -123,7 +134,7 @@ public class ComparePage extends Composite {
 			Button nextChange = new Button("Next!");
 			nextChange.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					changesCount++;
+					//changesCount++;
 					changedText.setText(difForDemo.get(changesCount));
 				    }
 			});
