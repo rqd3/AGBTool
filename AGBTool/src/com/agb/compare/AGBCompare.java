@@ -13,83 +13,6 @@ import difflib.Delta;
 public interface AGBCompare 
 {
 	
-	
-	/* Stores AGB-Version1-text form database in ArrayList
-	 * @param: sourceId1, version1
-	 * @return: 
-	 */
-	//public void readAGBVersion1(int sourceId1, int version1);
-	
-	
-	/* Returns ArrayList with AGB1-Text
-	 * @param: 
-	 * @return: breakIteratorArray1
-	 */
-	//public List<String> getAGBVersion1();
-	
-	
-	/* Shows text from AGB-Version1 on console
-	 * @param: 
-	 * @return: 
-	 */
-	//public void showAGBVersion1();
-	
-	
-	/* Writes text from AGB-Version1 as textfile
-	 * @param: 
-	 * @return: 
-	 */
-	//public void writeAGBVersion1();
-	
-	
-	
-	/* Stores AGB-Version2-text form database in ArrayList
-	 * @param: sourceId2, version2
-	 * @return: 
-	 */
-	//public void readAGBVersion2(int sourceId2, int version2);
-	
-	/* Returns ArrayList with AGB2-Text
-	 * @param: 
-	 * @return: breakIteratorArray2
-	 */
-	//public List<String> getAGBVersion2();
-	
-	/* Shows text from AGB-Version2 on console
-	 * @param: 
-	 * @return: 
-	 */
-	//public void showAGBVersion2();
-	
-	/* Writes text from AGB-Version2 as textfile
-	 * @param: 
-	 * @return: 
-	 */
-	//public void writeAGBVersion2();
-	
-	
-	
-	/* Checks if two different AGB-Versions exist
-	 * @param: sourceId1, version1, sourceId2, version2, 
-	 * @return: true, if two versions exist / else false
-	 */
-	public boolean twoAGBVersionsExist(int sourceId1, int version1, int sourceId2, int version2);
-	
-	/* Compares two AGB-Versions and shows differences on console
-	 * @param: breakIteratorArray1 ,breakIteratorArray2
-	 * @return: 
-	 */
-	//public void compareAGBVersions(List<String> breakIteratorArray1, List<String> breakIteratorArray2);
-	
-	/* Compares two AGB-Versions and writes differences in textfile
-	 * @param: breakIteratorArray1, breakIteratorArray2
-	 * @return: 
-	 */
-	//public void writeAGBDifferences(List<String> breakIteratorArray1, List<String> breakIteratorArray2);
-	
-	
-	
-	
 	/* Stores TopTenAGBs form database in an ArrayList print them out on console
 	 * @param: 
 	 * @return: 
@@ -185,11 +108,11 @@ public interface AGBCompare
 	 */
 	public List<String> getVersionDifferences();
 	
-	/* Returns readable version of AGB-Differences
+	/* Shows readable version of AGB-Differences
 	 * @param: 
-	 * @return: readableDifferences
+	 * @return: 
 	 */
-	public List<String> showReadableDifferences();
+	public void showReadableDifferences();
 	
 	
 	/* Writes readable version of AGB-Differences in textfile
@@ -199,11 +122,19 @@ public interface AGBCompare
 	public void writeReadableDiffereces();
 	
 	
-	/* Writes AGB-Version differences in textfile
-	 * @param: agbversion1, agbversion2
-	 * @return: 
+	/* Returns readable version of AGB-Differences
+	 * @param: 
+	 * @return: readableDifferences
 	 */
-	//public void writeDifferences(List<String> agbversion1, List<String> agbversion2);
+	public List<String> getAGBDifferences();
+	
+	
+	/* Returns readable version of AGB-Differences for Demonstration
+	 * @param: 
+	 * @return: readableDifferences
+	 */
+	public List<String> getAGBDifferencesForDemo(int sourceId, int version1, int version2);
+	
 	
 
 }

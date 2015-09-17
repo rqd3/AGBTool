@@ -1,4 +1,20 @@
-[[ChangeDelta, position: 97, lines: [Anstelle der unwirksamen oder fehlenden Bestimmungen treten die jeweiligen gesetzlichen Regelungen.Zur Datenschutzerklärung           Teilen         Twittern         Teilen auf Google+         Teilen auf Tumblr         Teilen auf Pinterest         per Mail versenden         Artikel melden                  de.bild.events.publish('initModule', ['sharingBar', null, {el: '#jsm_69518', sharingUrl: 'http://www.bild.de/corporate-site/agb/bild-de/artikel-agb-2952414.bild.html', text:'AGB'}]);, version=2, publishedAt=2015-09-14]]] 
+[[ChangeDelta, position: 0, lines: [November 2015 (archivierte Versionen anzeigen) Willkommen bei Google, wir freuen uns recht herzlich Sie bei uns begrüßen zu dürfen! ] to [November 2013 (archivierte Versionen anzeigen) Willkommen bei Google! 
 
- [Anstelle der unwirksamen oder fehlenden Bestimmungen treten die jeweiligen gesetzlichen Regelungen.Zur Datenschutzerklärung           Teilen         Twittern         Teilen auf Google+         Teilen auf Tumblr         Teilen auf Pinterest         per Mail versenden         Artikel melden                  de.bild.events.publish('initModule', ['sharingBar', null, {el: '#jsm_21417', sharingUrl: 'http://www.bild.de/corporate-site/agb/bild-de/artikel-agb-2952414.bild.html', text:'AGB'}]);, version=4, publishedAt=2015-09-15]]]
+ [ChangeDelta, position: 15, lines: [Sie dürfen Inhalte aus unseren Diensten nicht gewerblich nutzen, es sei denn, Sie verfügen über die Einwilligung des Rechteinhabers oder sind anderweitig zu dieser Nutzung berechtigt. ] to [Sie dürfen Inhalte aus unseren Diensten nicht nutzen, es sei denn, Sie verfügen über die Einwilligung des Rechteinhabers oder sind anderweitig zu dieser Nutzung berechtigt. 
+
+ [ChangeDelta, position: 21, lines: [Wir behalten uns das Recht vor, Inhalte auf ihre Rechts- und Sittenwidrigkeit oder auf die Verletzung von Richtlinien hin zu prüfen. ] to [Wir behalten uns das Recht vor, Inhalte auf ihre Rechtswidrigkeit oder auf die Verletzung von Richtlinien hin zu prüfen. 
+
+ [DeleteDelta, position: 31, lines: [Bitte wählen Sie ein geeignetes Passwort aus. 
+
+ [DeleteDelta, position: 45, lines: [Das können wir Ihnen garantieren. 
+
+ [DeleteDelta, position: 51, lines: [Ihre Rechte erlischen hiermit. 
+
+ [DeleteDelta, position: 56, lines: [Daher sind wir Ihnen für jedes Feedback dankbar. 
+
+ [DeleteDelta, position: 84, lines: [Rechtsverstöße werden geahndet. 
+
+ [DeleteDelta, position: 86, lines: [Diese Kosten haben Sie selbst zu tragen. 
+
+ [ChangeDelta, position: 99, lines: [Informationen zur Kontaktaufnahme mit Google finden Sie auf unserer Kontaktseite., version=1, publishedAt=2015-09-15]]] to [Informationen zur Kontaktaufnahme mit Google finden Sie auf unserer Kontaktseite., version=2, publishedAt=2015-09-17]]]
 

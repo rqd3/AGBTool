@@ -21,45 +21,17 @@ public class AGBComparatorTest
 		
 		AGBComparator c1 = new AGBComparator();
 		
-	    /*
-		// Teste Version1
-		c1.readAGBVersion1(45, 1);
-		
-		c1.getAGBVersion1();
-		
-		c1.showAGBVersion1();
-		
-		c1.writeAGBVersion1();
-		
-		// Teste Version2
-		c1.readAGBVersion2(40, 1);
-		
-		c1.getAGBVersion2();
-		
-		c1.showAGBVersion2();
-		
-		c1.writeAGBVersion2();
-		System.out.println(" ");
-		*/
-		
-		
+		/*
 		// Test TopTenAGB und AllAGBSources
 		c1.readTopTenAGB();
 		System.out.println(" ");
 		c1.readAllAGBSources();
 		
-		/*
-		// AGB-Vergleich
-		System.out.println(" ");
-		c1.compareAGBVersions(c1.getAGBVersion1(), c1.getAGBVersion2());
-		System.out.println(" ");
-		c1.writeAGBDifferences(c1.getAGBVersion1(), c1.getAGBVersion2());
-		*/
 		
 		// Test AllAGBVersionsOfSource
 		System.out.println(" ");
 		System.out.println("All AGBVersionsOfSource: ");
-		c1.readAllAGBVersionsOfSource(45, 1, 3);
+		c1.readAllAGBVersionsOfSource(42, 1, 2);
 		
 		
 		System.out.println(" ");
@@ -81,7 +53,7 @@ public class AGBComparatorTest
 		c1.showAGBVersion2WithLineNumbers();
 		System.out.println(" ");
 		
-		// GetAGBVErsion1WithLineNumbers funktioniert
+		// GetAGBVersion1WithLineNumbers funktioniert
 		System.out.println("GetAGBVErsion1WithLineNumbers: ");
 		List <String> agb1 = new ArrayList<String>();
 		agb1 = c1.getAGBVersion1WithLineNumbers();
@@ -111,7 +83,26 @@ public class AGBComparatorTest
 		c1.showReadableDifferences();
 		System.out.println(" ");
 		c1.writeReadableDiffereces();
+		System.out.println(" ");
 		
+		//c1.readAGBVersionTexts(45, 1);
+		
+		List <String> agblist = new ArrayList<String>();
+		agblist = c1.getAGBDifferences();
+		
+		System.out.println("Test getAGBDifferences: ");
+		Iterator diff = agblist.iterator();
+		while (diff.hasNext())
+		{
+			System.out.println(diff.next());
+		}
+		
+		// Final Test: getAGBDifferencesForDemo
+		System.out.println("getAGBDifferencesForDemo: ");
+		
+		*/
+		
+		c1.getAGBDifferencesForDemo(42, 1, 2);
 				
 	} //endmethod main
 	

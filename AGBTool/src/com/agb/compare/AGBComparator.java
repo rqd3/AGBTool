@@ -18,17 +18,6 @@ public class AGBComparator implements AGBCompare
 	// Attribute
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	
-	//private APIController apic_agb1 = new APIController();
-	//private APIController apic_agb2 = new APIController();
-	
-	//private List<String> agb1list = new ArrayList<String>();
-	//private List<String> agb2list = new ArrayList<String>();
-	
-	//private List <String> breakIteratorArray1 = new ArrayList<String>();
-	//private List <String> breakIteratorArray2 = new ArrayList<String>();
-	
-	//private List <String> deltaList = new ArrayList<String>();
-	
 	private List <String> topTenAGBs = new ArrayList<String>();
 	private List <String> allAGBSources = new ArrayList<String>();
 	
@@ -45,295 +34,6 @@ public class AGBComparator implements AGBCompare
 	private List<String> version2WithLineNumbers = new ArrayList<String>();
 	
 	// Methoden
-
-	/*
-	@Override
-	public void readAGBVersion1(int sourceId1, int version1) {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Lese AGBVersion1: ");
-		
-		String s = apic_agb1.getLatestAGBVersion(sourceId1).getText();
-		
-		Locale currentLocale = new Locale("de", "DE");
-		
-		BreakIterator sentenceIterator = BreakIterator.getSentenceInstance(currentLocale);
-		sentenceIterator.setText(s);
-
-		for (int last = sentenceIterator.first(), next = sentenceIterator.next();
-		        next != BreakIterator.DONE;
-		        last = next, next = sentenceIterator.next())
-		  {
-		    CharSequence part = s.subSequence( last, next );
-		    
-		    if (Character.isLetterOrDigit(part.charAt(0)))
-		    {
-		    	//System.out.println(part);
-			    breakIteratorArray1.add((String)part);
-		    } // endif
-		      
-		  } //endfor
-		
-		System.out.println("Lesevorgang erfolgreich! ");
-		
-
-	} //endmethod readAGBVersion1
-	
-
-	@Override
-	public List<String> getAGBVersion1() {
-		// TODO Auto-generated method stub
-		
-		//System.out.println("Gib AGBVersion1 zurueck: ");
-		
-		return breakIteratorArray1;
-	}
-	
-
-	@Override
-	public void showAGBVersion1() {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Zeige AGBVersion1 an: ");
-		
-		Iterator iter = breakIteratorArray1.iterator();
-		
-		while (iter.hasNext())
-		{
-			System.out.println(iter.next());
-		}
-
-	}
-	
-
-	@Override
-	public void writeAGBVersion1() {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Schreibe AGBVersion1 in Text-Datei: ");
-		
-		PrintWriter printWriter = null; 
-		
-		try 
-		{
-            printWriter = new PrintWriter(new FileWriter("AGB1-LatestVersion-Test.txt"));
-           
-            //Iterator iter = agb1list.iterator();
-            Iterator iter = breakIteratorArray1.iterator();
-            
-            while(iter.hasNext() ) 
-            {
-                Object o = iter.next();
-                printWriter.println(o);
-            }
-        } 
-		catch (IOException e) {
-            e.printStackTrace();
-        } 
-		finally 
-		{
-            if(printWriter != null) printWriter.close();
-        } 
-		
-
-	} //endmethod
-	
-
-	@Override
-	public void readAGBVersion2(int sourceId2, int version2) {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Lese AGBVersion2: ");
-		
-		String s = apic_agb2.getLatestAGBVersion(sourceId2).getText();
-		
-		Locale currentLocale = new Locale("de", "DE");
-		
-		BreakIterator sentenceIterator = BreakIterator.getSentenceInstance(currentLocale);
-		sentenceIterator.setText(s);
-
-		for (int last = sentenceIterator.first(), next = sentenceIterator.next();
-		        next != BreakIterator.DONE;
-		        last = next, next = sentenceIterator.next())
-		  {
-		    CharSequence part = s.subSequence( last, next );
-		    
-		    if (Character.isLetterOrDigit(part.charAt(0)))
-		    {
-		    	//System.out.println(part);
-			    breakIteratorArray2.add((String)part);
-		    } // endif
-		      
-		  } //endfor
-		
-		System.out.println("Lesevorgang erfolgreich! ");
-		
-
-	}
-	
-
-	@Override
-	public List<String> getAGBVersion2() {
-		// TODO Auto-generated method stub
-		
-		return breakIteratorArray2;
-	}
-
-	
-	@Override
-	public void showAGBVersion2() {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Zeige AGBVersion2 an: ");
-		
-		Iterator iter = breakIteratorArray2.iterator();
-		
-		while (iter.hasNext())
-		{
-			System.out.println(iter.next());
-		}
-
-	}
-
-	
-	@Override
-	public void writeAGBVersion2() {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Schreibe AGBVersion2 in Text-Datei: ");
-		
-		PrintWriter printWriter = null; 
-		
-		try 
-		{
-            printWriter = new PrintWriter(new FileWriter("AGB2-LatestVersion-Test.txt"));
-           
-            //Iterator iter = agb1list.iterator();
-            Iterator iter = breakIteratorArray2.iterator();
-            
-            while(iter.hasNext() ) 
-            {
-                Object o = iter.next();
-                printWriter.println(o);
-            }
-        } 
-		catch (IOException e) {
-            e.printStackTrace();
-        } 
-		finally 
-		{
-            if(printWriter != null) printWriter.close();
-        } 
-
-	}
-	*/
-	
-	@Override
-	public boolean twoAGBVersionsExist(int sourceId1, int version1, int sourceId2, int version2) {
-		// TODO Auto-generated method stub
-		
-		if ((sourceId1 == sourceId2) && (version1 != version2) && (version2 != 0))
-		{
-			return true;
-		}
-		else
-		{
-			System.out.println("Es existiert keine zweite AGB-Version zum Vergleich.");
-			return false;
-		}
-		
-	}
-
-	
-    /*
-	@Override
-	public void compareAGBVersions(List<String> breakIteratorArray1, List<String> breakIteratorArray2) {
-		// TODO Auto-generated method stub
-		
-		System.out.println("Starte AGB-Vergleich: ");
-		System.out.println("Achtung: Folgende Aenderung haben sich ergeben! ");
-		
-		List<Delta> list = new ArrayList<Delta>();
-		
-		Patch patch1 = DiffUtils.diff(breakIteratorArray1, breakIteratorArray2);
-		
-		 for (Delta delta: patch1.getDeltas()) 
-		 {
-            //System.out.println(delta + LINE_SEPARATOR);
-            list.add(delta);
-         }
-		 
-		String s = list.toString();
-		//System.out.println("String-Delta: " + delta);
-		
-		Locale currentLocale = new Locale("de", "DE");
-		
-		BreakIterator sentenceIterator = BreakIterator.getSentenceInstance(currentLocale);
-		sentenceIterator.setText(s);
-
-		for (int last = sentenceIterator.first(), next = sentenceIterator.next();
-		        next != BreakIterator.DONE;
-		        last = next, next = sentenceIterator.next())
-		  {
-		    CharSequence part = s.subSequence( last, next );
-		    
-		    if (Character.isLetterOrDigit(part.charAt(0)))
-		    {
-		    	System.out.println(part);
-			    deltaList.add((String)part);
-		    } // endif
-		      
-		  } //endfor
-		 
-		 System.out.println("Gibt Delta-List-Array aus: ");
-		 Iterator iter = deltaList.iterator();
-		 
-		 while (iter.hasNext())
-		 {
-			 System.out.println(iter.next());
-		 }
-		
-		
-	} //endmethod
-
-	
-	@Override
-	public void writeAGBDifferences(List<String> breakIteratorArray1, List<String> breakIteratorArray2) {
-		// TODO Auto-generated method stub
-		
-		PrintWriter printWriter = null; 
-		
-		String filename = "AGB - Aenderungen.txt";
-		
-		System.out.println("Schreibe Textdatei mit Aenderungen: ");
-		
-		try 
-		{
-			try {
-				printWriter = new PrintWriter(new FileWriter(filename));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
-			Patch patch1 = DiffUtils.diff(breakIteratorArray1, breakIteratorArray2);
-			
-			 for (Delta delta: patch1.getDeltas()) 
-			 {
-				 printWriter.println(delta+LINE_SEPARATOR);
-				
-	    }	 
-        } 
-		finally 
-		{
-            if(printWriter != null) printWriter.close();
-        } 
-		
-		
-	} //endmethod
-    */
 	
 	@Override
 	public void readTopTenAGB() {
@@ -342,6 +42,15 @@ public class AGBComparator implements AGBCompare
 		APIController apic = new APIController();
 		
 		String s = apic.getTopTenAGBSources().toString();
+		
+		/*
+		System.out.println("TopTenAGB mit getMethode: ");
+		List <AGBSource> topTenAgb = new ArrayList<AGBSource>();
+		for (int i = 0; i < topTenAgb.size(); i++)
+		{
+			String versionText = topTenAgb.get(i).getName();
+			System.out.println(versionText);
+		}*/
 		
 		String [] array = s.split("],");
 		
@@ -418,6 +127,7 @@ public class AGBComparator implements AGBCompare
 		
 		APIController apic = new APIController();
 		String sources = apic.getAllAGBVersionsOfSource(sourceId).toString();
+		
 		String agbtext1 = null;
 		String agbtext2 = null;
 		
@@ -427,7 +137,7 @@ public class AGBComparator implements AGBCompare
 		allAGBVersions = sources.split("],");
 		System.out.println("Array-Laenge: " + allAGBVersions.length);
 		int counter = allAGBVersions.length;
-		System.out.println("Counter-Laenge: " + counter);
+		//System.out.println("Counter-Laenge: " + counter);
 		
 		allAGBVersionsCorrectOrder = new String[counter+1];
 		System.out.println("Array-Laenge: " + allAGBVersionsCorrectOrder.length);
@@ -470,26 +180,7 @@ public class AGBComparator implements AGBCompare
 		} //endfor
 		
 		
-		/*
-		for (int i = 0; i < allAGBVersions.length; i++)
-		{
-			if (i+1 == version1)
-			{
-				agbtext1 = allAGBVersions[i];
-				//System.out.println("AGB1-Version gesetzt: ");
-			}
-			
-			if (i+1 == version2)
-			{
-				agbtext2 = allAGBVersions[i];
-				//System.out.println("AGB2-Version gesetzt: ");
-			}
-			else
-			{
-				System.out.println("Suche nach AGB-Version: ");
-			}
-		} //endfor
-		*/
+		
 		
 		//System.out.println("AGB-Version1: "+ agbtext1);
 		//System.out.println("AGB-Version2: "+ agbtext2);
@@ -653,43 +344,6 @@ public class AGBComparator implements AGBCompare
 		return versionDifferences;
 	}
 
-    /*
-	@Override
-	public void writeDifferences(List<String> agbversion1, List<String> agbversion2) {
-		// TODO Auto-generated method stub
-
-		PrintWriter printWriter = null; 
-		
-		String filename = "AGB-Versions-Aenderungen.txt";
-		
-		System.out.println("Schreibe Textdatei mit Aenderungen: ");
-		
-		try 
-		{
-			try {
-				printWriter = new PrintWriter(new FileWriter(filename));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
-			Patch patch1 = DiffUtils.diff(agbversion1, agbversion2);
-			
-			 for (Delta delta: patch1.getDeltas()) 
-			 {
-				 printWriter.println(delta+LINE_SEPARATOR);
-				
-	    }	 
-        } 
-		finally 
-		{
-            if(printWriter != null) printWriter.close();
-        } 
-		
-	}
-	*/
 
 
 	@Override
@@ -780,11 +434,12 @@ public class AGBComparator implements AGBCompare
 
 
 	@Override
-	public List<String> showReadableDifferences() {
+	public void showReadableDifferences() {
 		// TODO Auto-generated method stub
 		
 		String s = versionDifferences.toString();
-		String [] array = s.split("to");
+		String [] array = s.split("]],");
+		//String [] array = s.split("to");
 		
 		for (int i=0; i < array.length; i++)
 		{
@@ -793,7 +448,9 @@ public class AGBComparator implements AGBCompare
 		}
 		
 		
-		return readableDifferences;
+		
+		
+		
 	}
 
 
@@ -831,6 +488,38 @@ public class AGBComparator implements AGBCompare
 	}
 
 
-	
+	@Override
+	public List<String> getAGBDifferences() {
+		// TODO Auto-generated method stub
+		
+		return readableDifferences;
+	}
+
+
+	@Override
+	public List<String> getAGBDifferencesForDemo(int sourceId, int version1, int version2) {
+		// TODO Auto-generated method stub
+		
+		// Ablauf:
+		// readAllAGBVersionsOfSource(42, 1, 2); notwendig
+		// writeSelectedVersionsOfSource(c1.getSelectedVersion1(), c1.getSelectedVersion2()); notwendig fuer Zeilennummereiung
+		// compareSelectedVersions(c1.getSelectedVersion1(), c1.getSelectedVersion2()); notwendig
+		// readAGBVersionsWithLineNumbers(); 
+		// showAGBVersion1WithLineNumbers(); Anzeige
+		// showAGBVersion2WithLineNumbers(); Anzeige
+		// showReadableDifferences();
+		// writeReadableDiffereces();
+		
+		readAllAGBVersionsOfSource(sourceId, version1, version2);
+		writeSelectedVersionsOfSource(getSelectedVersion1(), getSelectedVersion2());
+		compareSelectedVersions(getSelectedVersion1(), getSelectedVersion2());
+		showReadableDifferences();
+		writeReadableDiffereces();
+		
+		
+		
+		return readableDifferences;
+	}
+
 
 } //endclass
