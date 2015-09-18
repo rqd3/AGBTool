@@ -512,7 +512,7 @@ public class AGBComparator implements AGBCompare
 		
 		readAllAGBVersionsOfSource(sourceId, version1, version2);
 		writeSelectedVersionsOfSource(getSelectedVersion1(), getSelectedVersion2());
-		compareSelectedVersions(getSelectedVersion1(), getSelectedVersion2());
+		compareSelectedVersions(getSelectedVersion2(), getSelectedVersion1());
 		showReadableDifferences();
 		writeReadableDiffereces();
 		

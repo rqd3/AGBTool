@@ -34,7 +34,7 @@ public class ComparePage extends Composite {
 		AGBVersion selectedVersion = null;
 		final TextArea changedText = new TextArea();
 		//static ListBox list = new ListBox();
-		TextArea agbText = new TextArea();
+		final TextArea agbText = new TextArea();
 		//Für die Demo
 		final int changesCount = 1;
 		//Parameter zum speichern aller Versionen
@@ -81,103 +81,102 @@ public class ComparePage extends Composite {
 		
 		
 		//Der Vergleich wird angezeigt - 
-		//Code um Test vorzuführen bitt normalerweise auskommentiert lassen oder löschen
-		/*AGBSource agbS = null;
-		if(agbS.getId() == 42) {
-			
-			//AGBComparator a = new AGBComparator();
-			//final List<String> difForDemo = a.getAGBDifferencesForDemo(42, 1, 2);
-			final List <String> difForDemo = new ArrayList<String>();
+				//Code um Test vorzuführen bitt normalerweise auskommentiert lassen oder löschen
+				AGBSource agbS = null;
+				if(AllVersions.get(1).getAgbSourceId() == 42) {
+					final List<AGBVersion> allV = AllVersions;
+					//final List <String> difForDemo = new ArrayList<String>();
 					agbToolService.getAGBDifferencesForDemo(42, 1, 2,new AsyncCallback<List<String>>() {
-				public void onFailure(Throwable caught) {
-				//do sth.
-				}
-				public void onSuccess(List<String> allAgbVersions) {
-				//do sth.
-				}
-				});
-			
-		
-			Date date = null;
-			AGBVersion last = null;
-			//Letzte AGBVersion herausziehen
-			for(AGBVersion v: AllVersions) {
-				if(date != null) {
-					if(date.before(v.getPublishedAt())) {
-						date = v.getPublishedAt();
-						last = v;
-					}
-				}
-				else {
-					date = v.getPublishedAt();
-					last = v;
-				}
-			}
-			//Letzte Version automatisch als gesetzte Wählen
-			selectedVersion = last;
-			
-	    	
-	    	HorizontalPanel hPanel = new HorizontalPanel();
-			hPanel.setSpacing(10);
-			compareDialog.setWidget(hPanel);
-			
-			
+						public void onFailure(Throwable caught) {
+						//do sth.
+						}
+						public void onSuccess(List<String> allAgbVersions) {
+						
+							final List<String> diffForDemo = allAgbVersions;
+							Date date = null;
+							AGBVersion last = null;
+							//Letzte AGBVersion herausziehen
+							for(AGBVersion v: allV) {
+								if(date != null) {
+									if(date.before(v.getPublishedAt())) {
+										date = v.getPublishedAt();
+										last = v;
+									}
+								}
+								else {
+									date = v.getPublishedAt();
+									last = v;
+								}
+							}
+							//Letzte Version automatisch als gesetzte Wählen
+							final AGBVersion selectedVersion = last;
+							
+					    	
+					    	HorizontalPanel hPanel = new HorizontalPanel();
+							hPanel.setSpacing(10);
+							compareDialog.setWidget(hPanel);
+							
+							
 
-		    
-		    
-		    //TextArea um die ausgewählten AGBs anzuzeigen
-			agbText.setText(selectedVersion.getText());
-			agbText.setReadOnly(true);
-			agbText.setSize("350px", "400px");
-			
-			//Button um zur nächsten Änderung zu wechseln
-			Button nextChange = new Button("Next!");
-			nextChange.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-					//changesCount++;
-					changedText.setText(difForDemo.get(changesCount));
-				    }
-			});
+						    
+						    
+						    //TextArea um die ausgewählten AGBs anzuzeigen
+							agbText.setText(selectedVersion.getText());
+							agbText.setReadOnly(true);
+							agbText.setSize("350px", "400px");
+							
+							//Button um zur nächsten Änderung zu wechseln
+							Button nextChange = new Button("Next!");
+							nextChange.addClickHandler(new ClickHandler() {
+								public void onClick(ClickEvent event) {
+									int index = diffForDemo.indexOf(changedText.getText());
+									changedText.setText(diffForDemo.get(index+1));
+								    }
+							});
 
-			
-			//TextArea um die Änderungen anzuzeigen
-			changedText.setText(difForDemo.get(changesCount));
-			changedText.setReadOnly(true);
-			changedText.setSize("200px", "300px");
+							//TextArea um die Änderungen anzuzeigen
+							changedText.setText(diffForDemo.get(1));
+							changedText.setReadOnly(true);
+							changedText.setSize("200px", "300px");
 
-			//Button um die DialogBox zu schließen
-			Button closeButton = new Button( "Close" , new ClickHandler() {
-				public void onClick(ClickEvent event) {
-				 	compareDialog.hide();
+							//Button um die DialogBox zu schließen
+							Button closeButton = new Button( "Close" , new ClickHandler() {
+								public void onClick(ClickEvent event) {
+								 	compareDialog.hide();
+								}
+							});
+							hPanel.add(closeButton);
+							if (LocaleInfo.getCurrentLocale().isRTL()) {
+							hPanel.setCellHorizontalAlignment(
+								closeButton, HasHorizontalAlignment.ALIGN_LEFT);
+							} else {
+								hPanel.setCellHorizontalAlignment(
+								closeButton, HasHorizontalAlignment.ALIGN_RIGHT);
+							}
+
+							
+							//Vertikales Panel zur AGB anzeige
+							VerticalPanel agbVersion = new VerticalPanel();
+							agbVersion.setSpacing(5);
+							agbVersion.add(agbText);
+
+							VerticalPanel agbChanges = new VerticalPanel();
+							agbVersion.setSpacing(5);
+							agbChanges.add(nextChange);
+							agbChanges.add(changedText);
+							
+							hPanel.add(agbVersion);
+							hPanel.add(agbChanges);
+							hPanel.add(closeButton);
+							
+							
+						}
+						});
+				
+				
+					
+					
 				}
-			});
-			hPanel.add(closeButton);
-			if (LocaleInfo.getCurrentLocale().isRTL()) {
-			hPanel.setCellHorizontalAlignment(
-				closeButton, HasHorizontalAlignment.ALIGN_LEFT);
-			} else {
-				hPanel.setCellHorizontalAlignment(
-				closeButton, HasHorizontalAlignment.ALIGN_RIGHT);
-			}
-
-			
-			//Vertikales Panel zur AGB anzeige
-			VerticalPanel agbVersion = new VerticalPanel();
-			agbVersion.setSpacing(5);
-			agbVersion.add(agbText);
-
-			VerticalPanel agbChanges = new VerticalPanel();
-			agbVersion.setSpacing(5);
-			agbChanges.add(nextChange);
-			agbChanges.add(changedText);
-			
-			hPanel.add(agbVersion);
-			hPanel.add(agbChanges);
-			hPanel.add(closeButton);
-			
-			
-			
-		}*/
 		
 		
 		
