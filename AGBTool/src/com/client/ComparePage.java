@@ -38,7 +38,7 @@ public class ComparePage extends Composite {
 		//Für die Demo
 		final int changesCount = 1;
 		//Parameter zum speichern aller Versionen
-		
+	 
 		
 		//DialogBox erstellen
 		///final DialogBox compareDialog = new DialogBox();
@@ -75,122 +75,105 @@ public class ComparePage extends Composite {
 			}
 		}
 		
-		
-		
-		
-		
-		
-		//Der Vergleich wird angezeigt - 
-				//Code um Test vorzuführen bitt normalerweise auskommentiert lassen oder löschen
-				AGBSource agbS = null;
-				if(AllVersions.get(1).getAgbSourceId() == 42) {
-					final List<AGBVersion> allV = AllVersions;
-					//final List <String> difForDemo = new ArrayList<String>();
-					agbToolService.getAGBDifferencesForDemo(42, 1, 2,new AsyncCallback<List<String>>() {
-						public void onFailure(Throwable caught) {
-						//do sth.
-						}
-						public void onSuccess(List<String> allAgbVersions) {
-						
-							final List<String> diffForDemo = allAgbVersions;
-							Date date = null;
-							AGBVersion last = null;
-							//Letzte AGBVersion herausziehen
-							for(AGBVersion v: allV) {
-								if(date != null) {
-									if(date.before(v.getPublishedAt())) {
+		else if(AllVersions.get(1).getAgbSourceId() == 42) {
+			
+			//Der Vergleich wird angezeigt - 
+					//Code um Test vorzuführen bitt normalerweise auskommentiert lassen oder löschen
+					AGBSource agbS = null;
+						final List<AGBVersion> allV = AllVersions;
+						//final List <String> difForDemo = new ArrayList<String>();
+						agbToolService.getAGBDifferencesForDemo(AllVersions.get(1).getAgbSourceId(), 1, 2,new AsyncCallback<List<String>>() {
+							public void onFailure(Throwable caught) {
+							//do sth.
+							}
+							public void onSuccess(List<String> allAgbVersions) {
+							
+								final List<String> diffForDemo = allAgbVersions;
+								Date date = null;
+								AGBVersion last = null;
+								//Letzte AGBVersion herausziehen
+								for(AGBVersion v: allV) {
+									if(date != null) {
+										if(date.before(v.getPublishedAt())) {
+											date = v.getPublishedAt();
+											last = v;
+										}
+									}
+									else {
 										date = v.getPublishedAt();
 										last = v;
 									}
 								}
-								else {
-									date = v.getPublishedAt();
-									last = v;
-								}
-							}
-							//Letzte Version automatisch als gesetzte Wählen
-							final AGBVersion selectedVersion = last;
-							
-					    	
-					    	HorizontalPanel hPanel = new HorizontalPanel();
-							hPanel.setSpacing(10);
-							compareDialog.setWidget(hPanel);
-							
-							
+								//Letzte Version automatisch als gesetzte Wählen
+								final AGBVersion selectedVersion = last;
+								
+						    	
+						    	HorizontalPanel hPanel = new HorizontalPanel();
+								hPanel.setSpacing(10);
+								compareDialog.setWidget(hPanel);
+								
+								
 
-						    
-						    
-						    //TextArea um die ausgewählten AGBs anzuzeigen
-							agbText.setText(selectedVersion.getText());
-							agbText.setReadOnly(true);
-							agbText.setSize("350px", "400px");
-							
-							//Button um zur nächsten Änderung zu wechseln
-							Button nextChange = new Button("Next!");
-							nextChange.addClickHandler(new ClickHandler() {
-								public void onClick(ClickEvent event) {
-									int index = diffForDemo.indexOf(changedText.getText());
-									changedText.setText(diffForDemo.get(index+1));
-								    }
-							});
+							    
+							    
+							    //TextArea um die ausgewählten AGBs anzuzeigen
+								agbText.setText(selectedVersion.getText());
+								agbText.setReadOnly(true);
+								agbText.setSize("350px", "400px");
+								
+								//Button um zur nächsten Änderung zu wechseln
+								Button nextChange = new Button("Next!");
+								nextChange.addClickHandler(new ClickHandler() {
+									public void onClick(ClickEvent event) {
+										int index = diffForDemo.indexOf(changedText.getText());
+										changedText.setText(diffForDemo.get(index+1));
+									    }
+								});
 
-							//TextArea um die Änderungen anzuzeigen
-							changedText.setText(diffForDemo.get(1));
-							changedText.setReadOnly(true);
-							changedText.setSize("200px", "300px");
+								//TextArea um die Änderungen anzuzeigen
+								changedText.setText(diffForDemo.get(1));
+								changedText.setReadOnly(true);
+								changedText.setSize("200px", "300px");
 
-							//Button um die DialogBox zu schließen
-							Button closeButton = new Button( "Close" , new ClickHandler() {
-								public void onClick(ClickEvent event) {
-								 	compareDialog.hide();
-								}
-							});
-							hPanel.add(closeButton);
-							if (LocaleInfo.getCurrentLocale().isRTL()) {
-							hPanel.setCellHorizontalAlignment(
-								closeButton, HasHorizontalAlignment.ALIGN_LEFT);
-							} else {
+								//Button um die DialogBox zu schließen
+								Button closeButton = new Button( "Close" , new ClickHandler() {
+									public void onClick(ClickEvent event) {
+									 	compareDialog.hide();
+									}
+								});
+								hPanel.add(closeButton);
+								if (LocaleInfo.getCurrentLocale().isRTL()) {
 								hPanel.setCellHorizontalAlignment(
-								closeButton, HasHorizontalAlignment.ALIGN_RIGHT);
+									closeButton, HasHorizontalAlignment.ALIGN_LEFT);
+								} else {
+									hPanel.setCellHorizontalAlignment(
+									closeButton, HasHorizontalAlignment.ALIGN_RIGHT);
+								}
+
+								
+								//Vertikales Panel zur AGB anzeige
+								VerticalPanel agbVersion = new VerticalPanel();
+								agbVersion.setSpacing(5);
+								agbVersion.add(agbText);
+
+								VerticalPanel agbChanges = new VerticalPanel();
+								agbVersion.setSpacing(5);
+								agbChanges.add(nextChange);
+								agbChanges.add(changedText);
+								
+								hPanel.add(agbVersion);
+								hPanel.add(agbChanges);
+								hPanel.add(closeButton);
+								
+								
 							}
-
-							
-							//Vertikales Panel zur AGB anzeige
-							VerticalPanel agbVersion = new VerticalPanel();
-							agbVersion.setSpacing(5);
-							agbVersion.add(agbText);
-
-							VerticalPanel agbChanges = new VerticalPanel();
-							agbVersion.setSpacing(5);
-							agbChanges.add(nextChange);
-							agbChanges.add(changedText);
-							
-							hPanel.add(agbVersion);
-							hPanel.add(agbChanges);
-							hPanel.add(closeButton);
-							
-							
-						}
-						});
-				
-				
+							});
 					
 					
-				}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+						
+						
+					}
+			
 		
 		//Korrekter Code
 		else { 
@@ -216,14 +199,14 @@ public class ComparePage extends Composite {
 	    	HorizontalPanel hPanel = new HorizontalPanel();
 			hPanel.setSpacing(10);
 			compareDialog.setWidget(hPanel);
-			/*
-			//Liste um das Datum aller AGB Versionen anzuzeigen
+			
+			/*//Liste um das Datum aller AGB Versionen anzuzeigen
 		    list.setVisibleItemCount(1);
 		    for (AGBVersion v: AllVersions) {
 		      list.addItem(v.getPublishedAt().toString());
 		    }
-		    
-		    //Bei Änderungen der ausgewählten AGB sollen diese eingetragen werden
+		    */
+		    /*//Bei Änderungen der ausgewählten AGB sollen diese eingetragen werden
 		    list.addChangeHandler(new ChangeHandler() {
 				public void onChange(ChangeEvent event) {
 					int selected = list.getSelectedIndex();
@@ -250,7 +233,7 @@ public class ComparePage extends Composite {
 			Button nextChange = new Button("Next!");
 			nextChange.addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-					changedText.setText("jep worked");
+					changedText.setText("AGB Veränderung sollte hier angezeigt werden!");
 				    }
 			});
 
